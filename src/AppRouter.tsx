@@ -5,6 +5,9 @@ import AdminAttendance from "./pages/Admin/AdminAttendance";
 import Course from "./pages/Admin/Course";
 import Students from "./pages/Admin/Students";
 import ClassSchedule from "./pages/Admin/ClassSchedule";
+import { Profile } from "./pages/Admin/Profile";
+import { AddCourse } from "./pages/Admin/AddCourse";
+// import Profile from "./pages/Admin/Profile";
 
 export default function AppRouter() {
   return (
@@ -21,6 +24,8 @@ export default function AppRouter() {
         <Route path="/admin/courses" element={<Course />} />
         <Route path="/admin/students" element={<Students />} />
         <Route path="/admin/classschedule" element={<ClassSchedule />} />
+        <Route path="/admin/profile" element={<Profile />} />
+        <Route path="/admin/add-course" element={<AddCourse />} />
       </Routes>
     </Router>
   );
