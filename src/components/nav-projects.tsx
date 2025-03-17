@@ -12,7 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "../components/ui/dropdown-menu"
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -21,12 +21,12 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar"
+} from "../components/ui/sidebar"
 
 export function NavProjects({
   projects,
 }: {
-  projects: {
+  readonly projects: readonly {
     name: string
     url: string
     icon: LucideIcon
@@ -36,7 +36,7 @@ export function NavProjects({
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Projects</SidebarGroupLabel>
+      {/* <SidebarGroupLabel>Projects</SidebarGroupLabel> */}
       <SidebarMenu>
         {projects.map((item) => (
           <SidebarMenuItem key={item.name}>

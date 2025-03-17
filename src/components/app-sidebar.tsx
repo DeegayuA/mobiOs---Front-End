@@ -4,18 +4,17 @@ import {
   Bot,
   Command,
   Frame,
+  LayoutDashboard,
   LifeBuoy,
   Map,
+  PersonStanding,
   PieChart,
+  School,
   Send,
   Settings2,
   SquareTerminal,
 } from "lucide-react"
 
-import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
-import { NavSecondary } from "@/components/nav-secondary"
-import { NavUser } from "@/components/nav-user"
 import {
   Sidebar,
   SidebarContent,
@@ -24,99 +23,60 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "../components/ui/sidebar"
+import { NavMain } from "./nav-main"
+import { NavProjects } from "./nav-projects"
+import { NavSecondary } from "./nav-secondary"
+import { NavUser } from "./nav-user"
 
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
+    name: "Admin",
+    email: "admin@e-attendance.com",
     avatar: "/avatars/shadcn.jpg",
   },
   navMain: [
     {
-      title: "Playground",
+      title: "Dashboard",
       url: "#",
-      icon: SquareTerminal,
+      icon: LayoutDashboard,
+      isActive: true,
+    },
+    {
+      title: "Attendance",
+      url: "#",
+      icon: School,
+    },
+    {
+      title: "Program",
+      url: "#",
+      icon: BookOpen,
       isActive: true,
       items: [
         {
-          title: "History",
+          title: "Courses/Modules",
           url: "#",
         },
         {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
+          title: "Class Schedule",
           url: "#",
         },
       ],
     },
     {
-      title: "Models",
+      title: "Students",
+      url: "#",
+      icon: PersonStanding,
+    },
+    {
+      title: "Reports",
+      url: "#",
+      icon: PieChart,
+    },
+    {
+      title: "Profile",
       url: "#",
       icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
     },
   ],
   navSecondary: [
@@ -131,23 +91,6 @@ const data = {
       icon: Send,
     },
   ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
-  ],
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -158,12 +101,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <a href="#">
-                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                  <Command className="size-4" />
+                <div className="text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+                  <img src="src/assets/letter-e.png" alt="Sidebar Icon" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">Acme Inc</span>
-                  <span className="truncate text-xs">Enterprise</span>
+                  <span className="truncate font-medium">E-Attendance</span>
+                  {/* <span className="truncate text-xs">Enterprise</span> */}
                 </div>
               </a>
             </SidebarMenuButton>
@@ -172,7 +115,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        {/* <NavProjects projects={data.projects} /> */}
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
