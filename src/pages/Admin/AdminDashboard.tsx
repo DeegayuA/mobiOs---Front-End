@@ -5,7 +5,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Separator } from "../../components/ui/separator";
 import { AppSidebar } from "../../components/app-sidebar";
 
-export default function AdminLayout() {
+export default function AdminDashboard() {
   return (
     <SidebarProvider>
       <AppSidebar />

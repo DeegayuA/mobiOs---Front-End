@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Admin/Login";
-import AdminLayout from "./pages/Admin/AdminLayout";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
 // import Dashboard from "@/pages/admin/Dashboard";
 // import Users from "@/pages/admin/Users";
 // import Settings from "@/pages/admin/Settings";
@@ -15,7 +15,7 @@ export default function AppRouter() {
       <Route path="/" element={<Login />} />
       
         {/* Admin Routes */}
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route path="/admin" element={<AdminDashboard />}>
           {/* <Route index element={<Dashboard />} />
           <Route path="users" element={<Users />} />
           <Route path="settings" element={<Settings />} /> */}
