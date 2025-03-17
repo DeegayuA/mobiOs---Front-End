@@ -30,6 +30,7 @@ export default function AdminAttendance() {
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
                 <BreadcrumbPage>Attendance</BreadcrumbPage>
+                <BreadcrumbPage className="absolute right-10">Hi! admin</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>

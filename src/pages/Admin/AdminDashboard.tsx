@@ -31,6 +31,7 @@ export default function AdminDashboard() {
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
                 <BreadcrumbPage>Dashboard</BreadcrumbPage>
+                <BreadcrumbPage className="absolute right-5">Hi! admin</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
