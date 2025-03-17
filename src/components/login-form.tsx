@@ -1,65 +1,77 @@
 import { cn } from "../lib/utils";
 import { Button } from "./ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import { Card, CardContent, CardHeader } from "./ui/card";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 
+interface LoginFormProps extends React.ComponentProps<"div"> {
+  portalType: "Admin" | "Student"; 
+}
 
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+export function LoginForm({ portalType, className, ...props }: LoginFormProps) {
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
-        <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
-          <CardDescription>
-            Enter your email below to login to your account
-          </CardDescription>
+    <div
+      className={cn(
+        "flex flex-col items-center min-h-screen justify-center p-6",
+        portalType === "Admin" ? "bg-gradient-to-br from-blue-50 to-gray-200" : "bg-gray-100",
+        className
+      )}
+      {...props}
+    >
+      <Card className="w-full max-w-sm md:max-w-lg lg:max-w-xl shadow-xl rounded-2xl p-6 md:p-10 bg-white">
+        <CardHeader className="text-center">
+          <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 whitespace-nowrap ">E-Attendance</h1>
+          <h2 className="text-lg md:text-xl font-semibold text-gray-600 mt-1">{portalType} Portal</h2>
         </CardHeader>
         <CardContent>
           <form>
             <div className="flex flex-col gap-6">
-              <div className="grid gap-3">
-                <Label htmlFor="email">Email</Label>
+              {/* Email Input */}
+              <div className="grid gap-2">
+                <Label htmlFor="email" className="text-gray-700 font-medium">
+                  Email
+                </Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="m@example.com"
+                  placeholder="Enter your email"
+                  className="h-10 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
-              <div className="grid gap-3">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                  <a
-                    href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </a>
-                </div>
-                <Input id="password" type="password" required />
+
+              {/* Password Input */}
+              <div className="grid gap-2">
+                <Label htmlFor="password" className="text-gray-700 font-medium">
+                  Password
+                </Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Enter your password"
+                  className="h-10 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  required
+                />
               </div>
-              <div className="flex flex-col gap-3">
-                <Button type="submit" className="w-full">
-                  Login
-                </Button>
-                <Button variant="outline" className="w-full">
-                  Login with Google
-                </Button>
+
+              {/* Login Button */}
+              <Button
+                type="submit"
+                className="w-full h-12 text-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-300"
+              >
+                Login
+              </Button>
+
+              {/* Reset Password Link */}
+              <div className="text-center">
+                <a href="/reset-password" className="text-sm md:text-base text-blue-600 hover:text-blue-800 underline transition">
+                  Reset Password
+                </a>
               </div>
-            </div>
-            <div className="mt-4 text-center text-sm">
-              Don&apos;t have an account?{" "}
-              <a href="#" className="underline underline-offset-4">
-                Sign up
-              </a>
             </div>
           </form>
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
