@@ -1,11 +1,10 @@
 import React from "react";
-import { Outlet } from "react-router-dom"; // For rendering nested routes
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "../../components/ui/breadcrumb";
 import { Separator } from "../../components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "../../components/ui/sidebar";
 import { AppSidebar } from "../../components/app-sidebar";
 
-export default function AdminDashboard() {
+export default function AdminAttendance() {
   const [activeFilter, setActiveFilter] = React.useState<string>("courses");
 
   function handleFilterClick(filter: string): void {
@@ -30,7 +29,7 @@ export default function AdminDashboard() {
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>Dashboard</BreadcrumbPage>
+                <BreadcrumbPage>Attendance</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
@@ -38,7 +37,7 @@ export default function AdminDashboard() {
       </header>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
         <div className="flex flex-col gap-6 p-6">
-          <h2 className="text-xl font-semibold uppercase">DASHBOARD</h2>
+          <h2 className="text-xl font-semibold uppercase">Attendance</h2>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="rounded-lg bg-muted p-6 shadow-md">

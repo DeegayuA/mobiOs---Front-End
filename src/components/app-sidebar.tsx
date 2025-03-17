@@ -38,13 +38,13 @@ const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "#",
+      url: "/admin/dashboard",
       icon: LayoutDashboard,
       isActive: true,
     },
     {
       title: "Attendance",
-      url: "#",
+      url: "/admin/attendance",
       icon: School,
     },
     {
@@ -55,39 +55,39 @@ const data = {
       items: [
         {
           title: "Courses/Modules",
-          url: "#",
+          url: "/admin/courses",
         },
         {
           title: "Class Schedule",
-          url: "#",
+          url: "/admin/classschedule",
         },
       ],
     },
     {
       title: "Students",
-      url: "#",
+      url: "/admin/students",
       icon: PersonStanding,
     },
     {
       title: "Reports",
-      url: "#",
+      url: "/admin/reports",
       icon: PieChart,
     },
     {
       title: "Profile",
-      url: "#",
+      url: "/admin/profile",
       icon: Bot,
     },
   ],
   navSecondary: [
     {
       title: "Support",
-      url: "#",
+      url: "/admin/support",
       icon: LifeBuoy,
     },
     {
       title: "Feedback",
-      url: "#",
+      url: "/admin/feedback",
       icon: Send,
     },
   ],
@@ -100,9 +100,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <a href="#">
+              <a href="/">
                 <div className="text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                  <img src="src/assets/letter-e.png" alt="Sidebar Icon" />
+                  <img src="/src/assets/letter-e.png" alt="Sidebar Icon" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">E-Attendance</span>
