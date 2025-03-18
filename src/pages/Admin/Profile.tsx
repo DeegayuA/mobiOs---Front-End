@@ -57,147 +57,149 @@ export function Profile() {
 
 
 
-return (
-    <SidebarProvider>
-        <AppSidebar />
-        <SidebarInset>
-            <div>
-                <header className="flex h-16 shrink-0 items-center gap-2 shadow-md">
-                    <div className="flex items-center gap-2 px-4">
-                        <SidebarTrigger className="-ml-1" />
-                        <Separator orientation="vertical" className="mr-2 h-4" />
-                        <Breadcrumb>
-                            <BreadcrumbList>
-                                <BreadcrumbItem className="hidden md:block">
-                                    <BreadcrumbLink href="#">
-                                        Admin
-                                    </BreadcrumbLink>
-                                </BreadcrumbItem>
-                                <BreadcrumbSeparator className="hidden md:block" />
-                                <BreadcrumbItem>
-                                    <BreadcrumbPage>PROFILE</BreadcrumbPage>
-                                    <BreadcrumbPage className="absolute right-5">Hi! admin</BreadcrumbPage>
-                                </BreadcrumbItem>
-                            </BreadcrumbList>
-                        </Breadcrumb>
-                    </div>
-                </header>
-                <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-                    <div className="flex flex-col gap-6 p-6">
-                        <h2 className="text-xl font-semibold uppercase">PROFILE</h2>
-                    </div>
-                    {/* code goes hrer */}
-                    <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                    <div className="space-y-4">
-                        <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormControl>
-                                        <Input 
-                                            placeholder="Name" 
-                                            {...field} 
-                                            className="border rounded-md p-2 w-1/2"
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        
-                        <FormField
-                            control={form.control}
-                            name="email"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormControl>
-                                        <Input 
-                                            placeholder="Email" 
-                                            {...field} 
-                                            className="border rounded-md p-2 w-1/2"
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        
-                        <FormField
-                            control={form.control}
-                            name="mobile"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormControl>
-                                        <Input 
-                                            placeholder="Mobile Number" 
-                                            {...field} 
-                                            className="border rounded-md p-2 w-1/2"
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
-                    
-                    <div className="mt-8">
-                        <h3 className="text-lg font-medium mb-4">Change Password</h3>
-                        
-                        <div className="space-y-4">
-                            <FormField
-                                control={form.control}
-                                name="newPassword"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormControl>
-                                            <Input 
-                                                type="password"
-                                                placeholder="New Password" 
-                                                {...field} 
-                                                className="border rounded-md p-2 w-1/2"
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            
-                            <FormField
-                                control={form.control}
-                                name="confirmPassword"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormControl>
-                                            <Input 
-                                                type="password"
-                                                placeholder="Re Enter Password" 
-                                                {...field} 
-                                                className="border rounded-md p-2 w-1/2"
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+    return (
+        <SidebarProvider>
+            <AppSidebar />
+            <SidebarInset>
+                <div>
+                    <header className="flex h-16 shrink-0 items-center gap-2 shadow-md">
+                        <div className="flex items-center gap-2 px-4">
+                            <SidebarTrigger className="-ml-1" />
+                            <Separator orientation="vertical" className="mr-2 h-4" />
+                            <Breadcrumb>
+                                <BreadcrumbList>
+                                    <BreadcrumbItem className="hidden md:block">
+                                        <BreadcrumbLink href="#">
+                                            Admin
+                                        </BreadcrumbLink>
+                                    </BreadcrumbItem>
+                                    <BreadcrumbSeparator className="hidden md:block" />
+                                    <BreadcrumbItem>
+                                        <BreadcrumbPage>PROFILE</BreadcrumbPage>
+                                        <BreadcrumbPage className="absolute right-5">Hi! admin</BreadcrumbPage>
+                                    </BreadcrumbItem>
+                                </BreadcrumbList>
+                            </Breadcrumb>
                         </div>
-                    </div>
-                    
-                    <div>
-                        <Button 
-                            type="submit" 
-                            className="bg-black text-white border border-black rounded-md px-6 py-2 hover:bg-gray-800"
-                        >
-                            Update
-                        </Button>
-                    </div>
-                </form>
-            </Form>
+                    </header>
+                    <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+                        <div className="flex flex-col gap-6 p-6">
+                            <h2 className="text-xl font-semibold uppercase">PROFILE</h2>
+                        </div>
+                        {/* code goes hrer */}
+                        <Form {...form}>
+                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                                <div className="space-y-4">
+                                    <FormField
+                                        control={form.control}
+                                        name="name"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormControl>
+                                                    <Input
+                                                        placeholder="Name"
+                                                        {...field}
+                                                        className="border rounded-md p-2 lg:w-1/2 "
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
 
+                                    <FormField
+                                        control={form.control}
+                                        name="email"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormControl>
+                                                    <Input
+                                                        placeholder="Email"
+                                                        {...field}
+                                                        className="border rounded-md p-2 lg:w-1/2"
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+
+                                    <FormField
+                                        control={form.control}
+                                        name="mobile"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormControl>
+                                                    <Input
+                                                        placeholder="Mobile Number"
+                                                        {...field}
+                                                        className="border rounded-md p-2 lg:w-1/2"
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
+
+                                <div className="mt-8">
+                                    <h3 className="text-lg font-medium mb-4">Change Password</h3>
+
+                                    <div className="space-y-4">
+                                        <FormField
+                                            control={form.control}
+                                            name="newPassword"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormControl>
+                                                        <Input
+                                                            type="password"
+                                                            placeholder="New Password"
+                                                            {...field}
+                                                            className="border rounded-md p-2 lg:w-1/2"
+                                                        />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+
+                                        <FormField
+                                            control={form.control}
+                                            name="confirmPassword"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormControl>
+                                                        <Input
+                                                            type="password"
+                                                            placeholder="Re Enter Password"
+                                                            {...field}
+                                                            className="border rounded-md p-2 lg:w-1/2"
+                                                        />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <Button
+                                        type="submit"
+                                        className="bg-black text-white border border-black rounded-md px-6 py-2 hover:bg-gray-800"
+                                    >
+                                        Update
+                                    </Button>
+                                </div>
+                            </form>
+                        </Form>
+
+                    </div>
                 </div>
-            </div>
-        </SidebarInset>
-    </SidebarProvider>
-);
+            </SidebarInset>
+        </SidebarProvider>
+    );
 }
+
+//

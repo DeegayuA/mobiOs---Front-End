@@ -1,6 +1,6 @@
 import React from "react";
-import { 
-    Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator 
+import {
+    Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator
 } from "../../components/ui/breadcrumb";
 import { Separator } from "../../components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "../../components/ui/sidebar";
@@ -9,8 +9,8 @@ import { Input } from "../../components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { 
-    Form, FormControl, FormField, FormItem, FormMessage 
+import {
+    Form, FormControl, FormDescription, FormField, FormItem, FormMessage
 } from "../../components/ui/form";
 import { Button } from "../../components/ui/button";
 
@@ -50,10 +50,10 @@ export function AddCourse() {
                             </BreadcrumbList>
                         </Breadcrumb>
                     </header>
-                    
+
                     <div className="flex flex-col gap-4 p-4 flex-1">
                         {/* <h2 className="text-xl font-semibold uppercase text-center">ADD COURSE</h2> */}
-                        
+
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 p-[3%]">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -82,20 +82,28 @@ export function AddCourse() {
                                             </FormItem>
                                         )} />
 
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
                                             <FormField control={form.control} name="startDate" render={({ field }) => (
-                                                <FormItem>
+                                                <FormItem className="lg:w-[70%]  ">
                                                     <FormControl>
-                                                        <Input type="date" {...field} className="border rounded-md p-2 w-[60%]" />
+                                                        <Input type="date" {...field} className="border rounded-md " />
                                                     </FormControl>
+                                                    <FormDescription>
+                                                        Start Date
+                                                    </FormDescription>
+
+
                                                 </FormItem>
                                             )} />
 
                                             <FormField control={form.control} name="endDate" render={({ field }) => (
-                                                <FormItem>
+                                                <FormItem className=" lg:ml-[40%] ">
                                                     <FormControl>
-                                                        <Input type="date" {...field} className="border rounded-md p-2 w-[60%] lg:ml-[40%]" />
+                                                        <Input type="date" {...field} className="border rounded-md p-2 " />
                                                     </FormControl>
+                                                    <FormDescription>
+                                                        End Date
+                                                    </FormDescription>
                                                 </FormItem>
                                             )} />
                                         </div>
@@ -128,3 +136,6 @@ export function AddCourse() {
         </SidebarProvider>
     );
 }
+
+
+//

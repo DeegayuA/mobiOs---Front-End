@@ -8,6 +8,8 @@ import ClassSchedule from "./pages/Admin/ClassSchedule";
 import { Profile } from "./pages/Admin/Profile";
 import { AddCourse } from "./pages/Admin/AddCourse";
 import { AddModule } from "./pages/Admin/AddModule";
+import { AddSchedule } from "./pages/Admin/AddSchedule";
+import { Reports } from "./pages/Admin/Reports";
 // import Profile from "./pages/Admin/Profile";
 
 export default function AppRouter() {
@@ -28,6 +30,8 @@ export default function AppRouter() {
         <Route path="/admin/profile" element={<Profile />} />
         <Route path="/admin/add-course" element={<AddCourse />} />
         <Route path="/admin/add-module" element={<AddModule />} />
+        <Route path="/admin/add-schedule" element={<AddSchedule />} />
+        <Route path="/admin/reports" element={<Reports />} />
       </Routes>
     </Router>
   );
