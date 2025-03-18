@@ -22,7 +22,7 @@ const Profile = () => {
     <div className="flex flex-col items-center justify-between min-h-screen bg-gray-100 p-4">
       
       <div className="w-full flex justify-between items-center px-6 py-4 bg-white shadow-md rounded-lg">
-        <h2 className="text-lg font-semibold text-gray-700">E-Attendance</h2>
+        {/* <h2 className="text-lg font-semibold text-gray-700">E-Attendance</h2> */}
         <h2 className="text-lg font-semibold text-gray-700">Student Portal</h2>
       </div>
 
