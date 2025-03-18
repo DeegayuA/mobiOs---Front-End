@@ -1,109 +1,143 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "../../components/ui/breadcrumb";
 import { Separator } from "../../components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "../../components/ui/sidebar";
 import { AppSidebar } from "../../components/app-sidebar";
+import { Table, TableHead, TableHeader, TableRow, TableBody, TableCell } from "../../components/ui/table";
+import { Select, SelectTrigger, SelectContent, SelectItem } from "../../components/ui/select";
+import { Input } from "../../components/ui/input";
 
-export default function AdminAttendance() {
-  const [activeFilter, setActiveFilter] = React.useState<string>("courses");
+// Dummy Data for API Simulation
+const data = {
+    "Artificial Intelligence": ["Deep Learning", "Neural Networks", "AI Ethics"],
+    "Data Science": ["Machine Learning", "Data Analytics", "Big Data"],
+    "Cyber Security": ["Cryptography", "Cloud Security", "Ethical Hacking"],
+    "Quantum Computing": ["Quantum Algorithms", "Quantum Cryptography"],
+    "Robotics": ["Embedded Systems", "Automation"],
+    "Biochemistry": ["Bioinformatics", "Genetic Engineering"],
+    "Network Engineering": ["Network Security", "Wireless Communications"],
+    "IoT Systems": ["Smart Devices", "Edge Computing"],
+    "Software Engineering": ["Agile Development", "Software Testing"]
+};
 
-  function handleFilterClick(filter: string): void {
-    setActiveFilter(filter);
-  }
+const courseData = Array.from({ length: 30 }, (_, i) => ({
+    course: i % 3 === 0 ? "Artificial Intelligence" : i % 3 === 1 ? "Data Science" : "Cyber Security",
+    module: i % 3 === 0 ? "Deep Learning" : i % 3 === 1 ? "Machine Learning" : "Cloud Security",
+    instructor: `Instructor ${i + 1}`,
+    classDate: `2025-04-${String(1 + (i % 30)).padStart(2, '0')}`,
+}));
 
-  return (
-    <SidebarProvider>
-    <AppSidebar />
-    <SidebarInset>
-    <div>
-      <header className="flex h-16 shrink-0 items-center gap-2 shadow-md">
-        <div className="flex items-center gap-2 px-4">
-        <SidebarTrigger className="-ml-1" />
-          <Separator orientation="vertical" className="mr-2 h-4" />
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">
-                  Admin
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Attendance</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
-      </header>
-      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <div className="flex flex-col gap-6 p-6">
-          <h2 className="text-xl font-semibold uppercase">Attendance</h2>
+export default function Course() {
+    const [selectedCourse, setSelectedCourse] = useState<keyof typeof data | "all">("all");
+    const [selectedModule, setSelectedModule] = useState<string>("all");
+    const [modules, setModules] = useState<string[]>(Object.values(data).flat());
+    const [filteredData, setFilteredData] = useState(courseData);
+    const [searchTerm, setSearchTerm] = useState<string>("");
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="rounded-lg bg-muted p-6 shadow-md">
-              <p className="text-sm text-gray-500">Number of Active Courses</p>
-              <p className="text-2xl font-bold">0</p>
-            </div>
-            <div className="rounded-lg bg-muted p-6 shadow-md">
-              <p className="text-sm text-gray-500">Number of Active Students</p>
-              <p className="text-2xl font-bold">0</p>
-            </div>
-          </div>
+    useEffect(() => {
+        let filtered = courseData.filter((item) =>
+            (selectedCourse === "all" || item.course === selectedCourse) &&
+            (selectedModule === "all" || item.module === selectedModule) &&
+            (item.course.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                item.module.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                item.instructor.toLowerCase().includes(searchTerm.toLowerCase()))
+        );
+        setFilteredData(filtered);
+    }, [selectedCourse, selectedModule, searchTerm]);
 
-          <div>
-          <h3 className="text-lg font-medium">Filter</h3>
-          <div className="mt-2 flex gap-4">
-            <button
-              className={`px-4 py-2 rounded transition-all duration-300 transform focus:outline-none focus:ring-2 ${
-                activeFilter === "courses"
-                  ? "bg-primary text-white scale-105"
-                  : "bg-muted text-muted-foreground hover:bg-primary-dark"
-              }`}
-              onClick={() => handleFilterClick("courses")}
-            >
-              Courses
-            </button>
-            <button
-              className={`px-4 py-2 rounded transition-all duration-300 transform focus:outline-none focus:ring-2 ${
-                activeFilter === "modules"
-                  ? "bg-secondary text-white scale-105"
-                  : "bg-muted text-muted-foreground hover:bg-secondary-dark"
-              }`}
-              onClick={() => handleFilterClick("modules")}
-            >
-              Modules
-            </button>
-          </div>
-        </div>
+    return (
+        <SidebarProvider>
+            <AppSidebar />
+            <SidebarInset>
+                <div>
+                    <header className="flex h-16 shrink-0 items-center gap-2 elevation-1 px-4">
+                        <SidebarTrigger className="-ml-1" />
+                        <Separator orientation="vertical" className="mr-2 h-4" />
+                        <Breadcrumb>
+                            <BreadcrumbList>
+                                <BreadcrumbItem className="hidden md:block">
+                                    <BreadcrumbLink href="#">Admin</BreadcrumbLink>
+                                </BreadcrumbItem>
+                                <BreadcrumbSeparator className="hidden md:block" />
+                                <BreadcrumbItem>
+                                    <BreadcrumbPage>Course Management</BreadcrumbPage>
+                                </BreadcrumbItem>
+                            </BreadcrumbList>
+                        </Breadcrumb>
+                        <span className="ml-auto font-medium text-gray-600">Hi! Admin</span>
+                    </header>
 
-          <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
-            <table className="w-full border-collapse border border-gray-200">
-              <thead>
-                <tr className="bg-gray-100 text-left">
-                  <th className="border border-gray-200 p-2">Courses</th>
-                  <th className="border border-gray-200 p-2">Modules</th>
-                  <th className="border border-gray-200 p-2">Class Dates</th>
-                  <th className="border border-gray-200 p-2">Total Students</th>
-                  <th className="border border-gray-200 p-2">Attendance Count</th>
-                  <th className="border border-gray-200 p-2">Attendance %</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="hover:bg-gray-50">
-                  <td className="border border-gray-200 p-2">-</td>
-                  <td className="border border-gray-200 p-2">-</td>
-                  <td className="border border-gray-200 p-2">-</td>
-                  <td className="border border-gray-200 p-2">-</td>
-                  <td className="border border-gray-200 p-2">-</td>
-                  <td className="border border-gray-200 p-2">-</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-    </SidebarInset>
-    </SidebarProvider>
-  );
+                    <div className="flex flex-1 flex-col p-6">
+                        <h2 className="text-2xl font-semibold uppercase px-4">Course Management</h2>
+                        <h3 className="text-lg font-medium mt-4 mb-2 px-4">Filter</h3>
+                        <div className="flex gap-2 py-4 px-4">
+                            <div className="flex-0">
+                                <h3 className="text-lg font-medium mb-2 min-w-[150px]">Course Filter</h3>
+                                <Select value={selectedCourse} onValueChange={setSelectedCourse}>
+                                    <SelectTrigger className="border rounded p-3 elevation-1 hover:elevation-2 transition-all duration-300">
+                                        {selectedCourse === "all" ? "Select Course" : selectedCourse}
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="all">All Courses</SelectItem>
+                                        {Object.keys(data).map(course => (
+                                            <SelectItem key={course} value={course}>{course}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <div className="flex-0">
+                                <h3 className="text-lg font-medium mb-2 min-w-[150px]">Module Filter</h3>
+                                <Select value={selectedModule} onValueChange={setSelectedModule}>
+                                    <SelectTrigger className="border rounded p-3 elevation-1 hover:elevation-2 transition-all duration-300">
+                                        {selectedModule === "all" ? "Select Module" : selectedModule}
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="all">All Modules</SelectItem>
+                                        {modules.map(module => (
+                                            <SelectItem key={module} value={module}>{module}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                            <div className="flex-0 min-w-[200px] w-full">
+                                <h3 className="text-lg font-medium mb-2 min-w-[200px]">Search</h3>
+
+                                <Input
+                                    type="text"
+                                    placeholder="Search by Course, Module, or Instructor"
+                                    className="border rounded p-3 elevation-1 hover:elevation-2 transition-all duration-300 w-full"
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="overflow-x-auto bg-white elevation-1 rounded-lg p-4 mt-4">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>Course</TableHead>
+                                        <TableHead>Module</TableHead>
+                                        <TableHead>Class Date</TableHead>
+                                        <TableHead>Instructor</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {filteredData.map((row, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell>{row.course}</TableCell>
+                                            <TableCell>{row.module}</TableCell>
+                                            <TableCell>{row.classDate}</TableCell>
+                                            <TableCell>{row.instructor}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </div>
+                    </div>
+                </div>
+            </SidebarInset>
+        </SidebarProvider>
+    );
 }
