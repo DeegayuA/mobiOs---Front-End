@@ -60,15 +60,15 @@ export function LoginForm({ portalType, className, ...props }: LoginFormProps) {
                 />
               </div>
 
-              {/* Login Button */}
+             
               <Button
-                type="submit" // ✅ Ensures form submits and triggers handleLogin
+                type="submit" 
                 className="w-full h-12 text-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-300"
               >
                 Login
               </Button>
 
-              {/* Reset Password Link */}
+              
               <div className="text-center">
                 <a
                   href="/reset-password"

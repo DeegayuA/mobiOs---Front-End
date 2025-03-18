@@ -1,5 +1,5 @@
 import React from "react";
-import { LoginForm } from "../../components/login-form"; // Adjust the path if necessary
+import { LoginForm } from "../../components/login-form";
 
 export default function Login() {
   return (

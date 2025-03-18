@@ -16,7 +16,7 @@ export default function AppRouter() {
         <Route path="/" element={<Login />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/confirmation" element={<Confirmation />} />
-        {/* <Route path="/home" element={<Home />} /> */}
+        
 
         {/* Admin Routes (Web View) */}
         {/* <Route path="/admin" element={<AdminLayout />}> */}

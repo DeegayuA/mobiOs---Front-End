@@ -8,7 +8,7 @@ export default function ResetPassword() {
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    // Handle password reset logic
+   
     alert(`Password reset link sent to: ${email}`);
   };
 

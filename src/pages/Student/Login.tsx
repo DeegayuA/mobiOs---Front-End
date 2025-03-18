@@ -6,7 +6,7 @@ export default function Login() {
 
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsMobile(window.innerWidth < 768); // Mobile view if screen width < 768px
+      setIsMobile(window.innerWidth < 768); 
     };
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
