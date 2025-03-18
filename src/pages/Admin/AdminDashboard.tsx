@@ -63,14 +63,14 @@ export default function AdminDashboard() {
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Dashboard</BreadcrumbPage>
+                  <BreadcrumbPage className="">Dashboard</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
             <span className="ml-auto font-medium text-gray-600">Hi! Admin</span>
           </header>
           <div className="flex flex-1 flex-col gap-4 p-6">
-            <h2 className="text-2xl font-semibold uppercase px-4">DASHBOARD</h2>
+            <h2 className="text-2xl font-semibold uppercase px-4 text-left">DASHBOARD</h2>
 
             <div className="grid px-4 grid-cols-2 xl:grid-cols-6 sm:grid-cols-3 gap-4 md:grid-cols-4 gap-4 gap-4 flex-wrap max-w-full min-w-[200px]">
               <Card>
@@ -125,7 +125,7 @@ export default function AdminDashboard() {
 
             <div className="flex gap-4 px-4">
               <div>
-                <h3 className="text-lg font-medium mb-2">Course Filter</h3>
+                <h3 className="text-lg font-medium mb-2  text-left">Course Filter</h3>
                 <Select value={selectedCourse} onValueChange={setSelectedCourse}>
                   <SelectTrigger className="border rounded p-2">
                     {selectedCourse === "all" ? "Select Course" : selectedCourse}
@@ -140,7 +140,7 @@ export default function AdminDashboard() {
               </div>
 
               <div>
-                <h3 className="text-lg font-medium mb-2">Module Filter</h3>
+                <h3 className="text-lg font-medium mb-2  text-left">Module Filter</h3>
                 <Select value={selectedModule} onValueChange={setSelectedModule}>
                   <SelectTrigger className="border rounded p-2">
                     {selectedModule === "all" ? "Select Module" : selectedModule}
@@ -155,7 +155,7 @@ export default function AdminDashboard() {
               </div>
 
               <div className="flex-0 min-w-[200px] w-full">
-                <h3 className="text-lg font-medium mb-2 min-w-[200px]">Search</h3>
+                <h3 className="text-lg font-medium mb-2 min-w-[200px]  text-left">Search</h3>
                 <Input
                   type="text"
                   placeholder="Search by Course, Module, or Instructor"
@@ -166,7 +166,7 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <div className="overflow-x-auto bg-white shadow-md rounded-lg p-4">
+            <div className="overflow-x-auto bg-white shadow-md rounded-lg p-4 text-left">
               <Table className="px-4">
                 <TableHeader>
                   <TableRow>

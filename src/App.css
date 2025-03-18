@@ -40,3 +40,11 @@
 .read-the-docs {
   color: #888;
 }
+
+:root {
+  /* --sidebar-bg-color: #baecf9; */
+}
+
+.bg-sidebar {
+  background-color: var(--sidebar-bg-color);
+}

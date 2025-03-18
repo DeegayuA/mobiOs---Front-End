@@ -70,8 +70,8 @@ export default function AdminCourse() {
           </header>
 
           <div className="flex flex-1 flex-col p-6">
-            <h2 className="text-2xl font-semibold">Programs - Course</h2>
-            <h3 className="text-lg font-medium mt-4 mb-2">Filter</h3>
+            <h2 className="text-2xl font-semibold text-left">Programs - Course</h2>
+            <h3 className="text-lg font-medium mt-4 mb-2 text-left">Filter</h3>
 
             <div className="flex gap-4 mt-4">
               <Select onValueChange={setSelectedCourse}>
@@ -105,7 +105,7 @@ export default function AdminCourse() {
               />
             </div>
 
-            <div className="overflow-x-auto bg-white shadow-md rounded-lg p-4 mt-4">
+            <div className="overflow-x-auto bg-white shadow-md rounded-lg p-4 mt-4 text-left">
               <Table>
 
 

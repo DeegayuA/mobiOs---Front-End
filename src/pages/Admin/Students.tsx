@@ -51,7 +51,7 @@ export default function AdminStudents() {
           </header>
 
           <div className="flex flex-1 flex-col p-8 space-y-6">
-            <h2 className="text-2xl font-semibold">STUDENTS</h2>
+            <h2 className="text-2xl font-semibold  text-left">STUDENTS</h2>
 
             <div className="flex justify-between mt-4">
               {/* Filter Section */}
@@ -95,7 +95,7 @@ export default function AdminStudents() {
             </div>
 
             {/* Table */}
-            <div className="overflow-x-auto bg-white shadow-md rounded-lg p-4 mt-6">
+            <div className="overflow-x-auto bg-white shadow-md rounded-lg p-4 mt-6  text-left">
               <Table>
                 <TableHeader>
                   <TableRow>

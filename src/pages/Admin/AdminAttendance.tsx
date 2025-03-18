@@ -68,11 +68,11 @@ export default function Course() {
                     </header>
 
                     <div className="flex flex-1 flex-col p-6">
-                        <h2 className="text-2xl font-semibold uppercase px-4">Course Management</h2>
-                        <h3 className="text-lg font-medium mt-4 mb-2 px-4">Filter</h3>
+                        <h2 className="text-2xl font-semibold uppercase px-4  text-left">Course Management</h2>
+                        <h3 className="text-lg font-medium mt-4 mb-2 px-4  text-left">Filter</h3>
                         <div className="flex gap-2 py-4 px-4">
                             <div className="flex-0">
-                                <h3 className="text-lg font-medium mb-2 min-w-[150px]">Course Filter</h3>
+                                <h3 className="text-lg font-medium mb-2 min-w-[150px]  text-left">Course Filter</h3>
                                 <Select value={selectedCourse} onValueChange={setSelectedCourse}>
                                     <SelectTrigger className="border rounded p-3 elevation-1 hover:elevation-2 transition-all duration-300">
                                         {selectedCourse === "all" ? "Select Course" : selectedCourse}
@@ -87,7 +87,7 @@ export default function Course() {
                             </div>
 
                             <div className="flex-0">
-                                <h3 className="text-lg font-medium mb-2 min-w-[150px]">Module Filter</h3>
+                                <h3 className="text-lg font-medium mb-2 min-w-[150px]  text-left">Module Filter</h3>
                                 <Select value={selectedModule} onValueChange={setSelectedModule}>
                                     <SelectTrigger className="border rounded p-3 elevation-1 hover:elevation-2 transition-all duration-300">
                                         {selectedModule === "all" ? "Select Module" : selectedModule}
@@ -101,7 +101,7 @@ export default function Course() {
                                 </Select>
                             </div>
                             <div className="flex-0 min-w-[200px] w-full">
-                                <h3 className="text-lg font-medium mb-2 min-w-[200px]">Search</h3>
+                                <h3 className="text-lg font-medium mb-2 min-w-[200px]  text-left">Search</h3>
 
                                 <Input
                                     type="text"
@@ -113,7 +113,7 @@ export default function Course() {
                             </div>
                         </div>
 
-                        <div className="overflow-x-auto bg-white elevation-1 rounded-lg p-4 mt-4">
+                        <div className="overflow-x-auto bg-white elevation-1 rounded-lg p-4 mt-4  text-left">
                             <Table>
                                 <TableHeader>
                                     <TableRow>
