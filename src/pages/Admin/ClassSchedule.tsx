@@ -4,7 +4,6 @@ import { Separator } from "../../components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "../../components/ui/sidebar";
 import { AppSidebar } from "../../components/app-sidebar";
 import { Button } from "../../components/ui/button";
-import { Input } from "../../components/ui/input";
 import { Table, TableHead, TableHeader, TableRow, TableBody, TableCell } from "../../components/ui/table";
 
 export default function AdminClassSchedule() {
@@ -13,6 +12,62 @@ export default function AdminClassSchedule() {
   function handleFilterClick(filter: string): void {
     setActiveFilter(filter);
   }
+
+  function handleGenerateQR(courseName: string, moduleName: string) {
+    alert(`QR code generated for ${courseName} - ${moduleName}`);
+  }
+
+  const classScheduleData = [
+    {
+      courseName: "Artificial Intelligence",
+      courseId: "AI101",
+      module: "Deep Learning",
+      moduleId: "DL201",
+      qrCode: "https://placehold.co/150x150.png"
+    },
+    {
+      courseName: "Data Science",
+      courseId: "DS101",
+      module: "Machine Learning",
+      moduleId: "ML202",
+      qrCode: "https://placehold.co/150x150.png"
+    },
+    {
+      courseName: "Cyber Security",
+      courseId: "CS101",
+      module: "Cloud Security",
+      moduleId: "CS303",
+      qrCode: "https://placehold.co/150x150.png"
+    },
+    {
+      courseName: "Robotics",
+      courseId: "RO101",
+      module: "Embedded Systems",
+      moduleId: "RO201",
+      qrCode: "https://placehold.co/150x150.png"
+    },
+    {
+      courseName: "Quantum Computing",
+      courseId: "QC101",
+      module: "Quantum Algorithms",
+      moduleId: "QC201",
+      qrCode: "https://placehold.co/150x150.png"
+    },
+    {
+      courseName: "Biochemistry",
+      courseId: "BC101",
+      module: "Bioinformatics",
+      moduleId: "BC201",
+      qrCode: "https://placehold.co/150x150.png"
+    },
+    {
+      courseName: "Network Engineering",
+      courseId: "NE101",
+      module: "Network Security",
+      moduleId: "NE201",
+      qrCode: "https://placehold.co/150x150.png"
+    }
+  ];
 
   return (
     <SidebarProvider>
@@ -38,24 +93,6 @@ export default function AdminClassSchedule() {
 
           <div className="flex flex-1 flex-col p-6">
             <h2 className="text-2xl font-semibold">PROGRAMS — CLASS SCHEDULE</h2>
-            {/* <h3 className="text-lg font-medium mt-4 mb-2">Filter</h3> */}
-            {/* <Button className="absolute right-5 ml-4">ADD COURSE</Button> */}
-
-            {/* <div className="flex gap-4">
-              <Button
-                variant={activeFilter === "courses" ? "default" : "outline"}
-                onClick={() => handleFilterClick("courses")}
-              >
-                Courses
-              </Button>
-              <Button
-                variant={activeFilter === "modules" ? "default" : "outline"}
-                onClick={() => handleFilterClick("modules")}
-              >
-                Modules
-              </Button>
-              <Input type="text" placeholder="Search..." className="w-1/3" />
-            </div> */}
 
             <div className="overflow-x-auto bg-white shadow-md rounded-lg p-4">
               <Table>
@@ -70,17 +107,25 @@ export default function AdminClassSchedule() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  <TableRow>
-                    <TableCell>-</TableCell>
-                    <TableCell>-</TableCell>
-                    <TableCell>-</TableCell>
-                    <TableCell>-</TableCell>
-                    <TableCell>-</TableCell>
-                    <TableCell>
-                      <Button variant="link" size="sm">View</Button> |
-                      <Button variant="link" size="sm">Generate QR</Button>
-                    </TableCell>
-                  </TableRow>
+                  {classScheduleData.map((row, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{row.courseName}</TableCell>
+                      <TableCell>{row.courseId}</TableCell>
+                      <TableCell>{row.module}</TableCell>
+                      <TableCell>{row.moduleId}</TableCell>
+                      <TableCell><img src={row.qrCode} alt="QR Code" className="w-16 h-16" /></TableCell>
+                      <TableCell>
+                        <Button variant="link" size="sm">View</Button> |
+                        <Button 
+                          variant="link" 
+                          size="sm" 
+                          onClick={() => handleGenerateQR(row.courseName, row.module)}
+                        >
+                          Generate QR
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
                 </TableBody>
               </Table>
             </div>
