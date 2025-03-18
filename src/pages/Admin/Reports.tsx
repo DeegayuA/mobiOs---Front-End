@@ -61,8 +61,8 @@ export function Reports() {
         <SidebarProvider>
             <AppSidebar />
             <SidebarInset>
-                <div>
-                    <header className="flex h-16 shrink-0 items-center gap-2 shadow-md">
+                <div className="border border-[var(--primary-border-color)] rounded-lg shadow-md">
+                    <header className="flex h-16 shrink-0 items-center gap-2 shadow-md px-4 border-[var(--primary-border-color)] border-b">
                         <div className="flex items-center gap-2 px-4">
                             <SidebarTrigger className="-ml-1" />
                             <Separator orientation="vertical" className="mr-2 h-4" />
@@ -93,13 +93,13 @@ export function Reports() {
                             <Input
                                 disabled
                                 placeholder="Reports"
-                                className="border rounded-md p-2 w-1/2"
+                                className="border rounded-md p-2 w-1/2 border-[var(--primary-border-color)]"
                             />
 
 
                             <Button
                                 type="submit"
-                                className="bg-black text-white border border-black rounded-md px-6 py-2 hover:bg-gray-800"
+                               variant="accent"
                             >
                                 Download
                             </Button>
