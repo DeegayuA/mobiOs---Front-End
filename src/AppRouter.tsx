@@ -10,6 +10,7 @@ import { AddCourse } from "./pages/Admin/AddCourse";
 import { AddModule } from "./pages/Admin/AddModule";
 import { AddSchedule } from "./pages/Admin/AddSchedule";
 import { Reports } from "./pages/Admin/Reports";
+import { AddStudent } from "./pages/Admin/AddStudent";
 // import Profile from "./pages/Admin/Profile";
 
 export default function AppRouter() {
@@ -32,6 +33,7 @@ export default function AppRouter() {
         <Route path="/admin/add-module" element={<AddModule />} />
         <Route path="/admin/add-schedule" element={<AddSchedule />} />
         <Route path="/admin/reports" element={<Reports />} />
+        <Route path="/admin/add-student" element={<AddStudent />} />
       </Routes>
     </Router>
   );
