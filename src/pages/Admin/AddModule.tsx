@@ -104,7 +104,33 @@ export function AddModule() {
                                             )} />
                                         </div>
 
+                                        <div className="flex">
+                                            <FormField control={form.control} name="moduleName" render={({ field }) => (
+                                                <FormItem className="w-[60%]">
+                                                    <FormControl>
+                                                        <Input placeholder="Module Name" {...field} className="border rounded-md p-2  " />
+                                                    </FormControl>
+                                                </FormItem>
+                                            )} />
 
+                                            <FormField control={form.control} name="moduleCode" render={({ field }) => (
+                                                <FormItem className="w-[20%]">
+                                                    <FormControl>
+                                                        <Input placeholder="Module Code" {...field} className="border rounded-md p-2 " />
+                                                    </FormControl>
+                                                </FormItem>
+                                            )} />
+                                            <IoMdAdd className="text-4xl lg:ml-[3%] cursor-pointer " />
+                                        </div>
+
+                                        <div className="w-[49%]">
+                                            <Textarea placeholder="Module Details" />
+
+                                        </div>
+
+                                        <Button type="submit" className="bg-black text-white border border-black rounded-md px-6 py-2 hover:bg-gray-800 w-full md:w-auto">
+                                            Submit
+                                        </Button>
                                     </div>
 
                                     <div className="space-y-4 md:pl-12 lg:pl-24 lg:max-w-xs lg:ml-[30%]">
@@ -122,35 +148,11 @@ export function AddModule() {
                                         </div>
                                     </div>
 
-                                    <div className="flex space-x-[5%] w-full">
-                                        <FormField control={form.control} name="moduleName" render={({ field }) => (
-                                            <FormItem className="w-[60%]">
-                                                <FormControl>
-                                                    <Input placeholder="Module Name" {...field} className="border rounded-md p-2  " />
-                                                </FormControl>
-                                            </FormItem>
-                                        )} />
-                                        <FormField control={form.control} name="moduleCode" render={({ field }) => (
-                                            <FormItem className="w-[20%]">
-                                                <FormControl>
-                                                    <Input placeholder="Module Code" {...field} className="border rounded-md p-2 " />
-                                                </FormControl>
-                                            </FormItem>
-                                        )} />
-                                        <IoMdAdd className="text-4xl lg:ml-[3%] cursor-pointer " />
-                                    </div>
-
 
                                 </div>
 
-                                <div className="w-[49%]">
-                                    <Textarea placeholder="Module Details"/>
 
-                                </div>
 
-                                <Button type="submit" className="bg-black text-white border border-black rounded-md px-6 py-2 hover:bg-gray-800 w-full md:w-auto">
-                                    Submit
-                                </Button>
                             </form>
                         </Form>
 
@@ -158,6 +160,6 @@ export function AddModule() {
                     </div>
                 </div>
             </SidebarInset>
-        </SidebarProvider>
+        </SidebarProvider >
     );
 }
