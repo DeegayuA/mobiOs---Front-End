@@ -1,33 +1,37 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AdminLayout from "./pages/Admin/AdminLayout";
 import Login from "./pages/Admin/Login";
-import StudentLayout from "./pages/Student/StudentLayout"; // Student mobile layout
+import StudentLayout from "./pages/Student/StudentLayout"; 
 import ResetPassword from "./pages/Student/ResetPassword";
 import Confirmation from "./pages/Student/Confirmation";
+import QRScanner from "./pages/Student/QRScanner";
+import Attendence from "./pages/Student/Attendence";
+import Profile from "./pages/Student/Profile";
 
 export default function AppRouter() {
   return (
     <Router>
       <Routes>
-        {/* Login Route */}
-        <Route path="/login" element={<Login />} />
+        {/* Common Routes */}
+        <Route path="/" element={<Login />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/confirmation" element={<Confirmation />} />
+        {/* <Route path="/home" element={<Home />} /> */}
 
         {/* Admin Routes (Web View) */}
-        <Route path="/admin" element={<AdminLayout />}>
+        {/* <Route path="/admin" element={<AdminLayout />}> */}
           {/* Nested Admin Routes */}
           {/* <Route index element={<Dashboard />} />
           <Route path="users" element={<Users />} />
           <Route path="settings" element={<Settings />} /> */}
-        </Route>
+        {/* </Route> */}
 
         {/* Student Routes (Mobile View) */}
         <Route path="/student" element={<StudentLayout />}>
-          {/* Nested Student Routes */}
-          {/* <Route index element={<StudentDashboard />} />
-          <Route path="profile" element={<StudentProfile />} />
-          <Route path="courses" element={<StudentCourses />} /> */}
+        <Route path="qr-scanner" element={<QRScanner />} />
+        <Route path="attendence" element={<Attendence />} />
+        <Route path="profile" element={<Profile />} />
+  
         </Route>
 
         {/* 404 - Not Found */}

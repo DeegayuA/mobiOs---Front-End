@@ -24,7 +24,7 @@ export default function Confirmation() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* New Password Input */}
+            
             <div className="grid gap-2">
               <label className="text-gray-700 font-medium text-sm">New Password</label>
               <Input
@@ -37,7 +37,7 @@ export default function Confirmation() {
               />
             </div>
 
-            {/* Confirm Password Input */}
+            
             <div className="grid gap-2">
               <label className="text-gray-700 font-medium text-sm">Re-Enter Password</label>
               <Input
@@ -50,7 +50,7 @@ export default function Confirmation() {
               />
             </div>
 
-            {/* Confirm Button */}
+            
             <Button
               type="submit"
               className="w-full h-12 text-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-300"

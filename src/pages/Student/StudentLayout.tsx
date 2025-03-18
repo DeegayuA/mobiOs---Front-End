@@ -1,23 +1,15 @@
 import { Outlet } from "react-router-dom";
-import BottomNav from "../../components/Student/BottomNavBar"; // Import the BottomNav component
+import BottomNavBar from "../../components/Student/BottomNavBar"; 
 
-export default function StudentLayout() {
+const StudentLayout = () => {
   return (
-    <div className="relative min-h-screen flex flex-col">
-      {/* Header Section */}
-      <header className="p-4 bg-white border-b shadow-md flex justify-between items-center">
-        <h1 className="text-lg font-bold">E-Attendance</h1>
-        <span className="text-gray-500">Student Portal</span>
-      </header>
-
-      {/* Main Content */}
-      <main className="flex-grow p-4">
-        <Outlet /> {/* This will render child routes inside StudentLayout */}
-      </main>
-
-      {/* Bottom Navigation */}
-      <BottomNav />
+    <div className="flex flex-col min-h-screen">
+      <div className="flex-grow">
+        <Outlet /> 
+      </div>
+      <BottomNavBar /> 
     </div>
   );
-}
+};
 
+export default StudentLayout;
