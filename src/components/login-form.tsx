@@ -9,12 +9,13 @@ interface LoginFormProps extends React.ComponentProps<"div"> {
   portalType: "Admin" | "Student";
 }
 
-export function LoginForm({ portalType, className, ...props }: LoginFormProps) {
-  const navigate = useNavigate(); // ✅ Ensure useNavigate is inside a <BrowserRouter>
+export function LoginForm({ portalType = "Student", className, ...props }: LoginFormProps) {
+  console.log("Portal Type:", portalType); 
+  const navigate = useNavigate(); 
 
   const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault(); // ✅ Prevent full page reload
-    navigate("/student/qr-scanner"); // ✅ Redirect after login
+    e.preventDefault(); 
+    navigate("/student/qr-scanner"); 
   };
 
   return (
@@ -26,7 +27,7 @@ export function LoginForm({ portalType, className, ...props }: LoginFormProps) {
       )}
       {...props}
     >
-      <Card className="w-full max-w-sm md:max-w-lg lg:max-w-xl shadow-xl rounded-2xl p-6 md:p-10 bg-white">
+      <Card className="w-full h-full max-w-md md:max-w-xl lg:max-w-2xl shadow-xl rounded-2xl md:p-12 bg-white">
         <CardHeader className="text-center">
           <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 whitespace-nowrap">
             E-Attendance
@@ -34,28 +35,28 @@ export function LoginForm({ portalType, className, ...props }: LoginFormProps) {
           <h2 className="text-lg md:text-xl font-semibold text-gray-600 mt-1">{portalType} Portal</h2>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleLogin}> {/* ✅ Fix: Calls handleLogin on submit */}
-            <div className="flex flex-col gap-6">
-              {/* Email Input */}
+          <form onSubmit={handleLogin}>
+            <div className="flex flex-col gap-6 items-center">
+             
               <div className="grid gap-2">
-                <Label htmlFor="email" className="text-gray-700 font-medium">Email</Label>
+                <Label htmlFor="email" className="text-gray-700 font-medium text-center">Email</Label>
                 <Input
                   id="email"
                   type="email"
                   placeholder="Enter your email"
-                  className="h-10 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="h-10 w-full text-md border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
 
-              {/* Password Input */}
+              
               <div className="grid gap-2">
                 <Label htmlFor="password" className="text-gray-700 font-medium">Password</Label>
                 <Input
                   id="password"
                   type="password"
                   placeholder="Enter your password"
-                  className="h-10 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="h-10 w-full text-md border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
@@ -63,7 +64,7 @@ export function LoginForm({ portalType, className, ...props }: LoginFormProps) {
              
               <Button
                 type="submit" 
-                className="w-full h-12 text-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-300"
+                className="w-full h-12 text-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-2xl transition-all duration-300"
               >
                 Login
               </Button>

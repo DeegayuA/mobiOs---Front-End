@@ -32,7 +32,7 @@ export default function Confirmation() {
                 placeholder="Enter new password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                className="h-12 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="h-12 text-md border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
@@ -45,7 +45,7 @@ export default function Confirmation() {
                 placeholder="Confirm new password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="h-12 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="h-12 text-md border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
@@ -53,7 +53,7 @@ export default function Confirmation() {
             
             <Button
               type="submit"
-              className="w-full h-12 text-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-300"
+              className="w-full h-12 text-md bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-2xl transition-all duration-300"
             >
               Confirm Password
             </Button>

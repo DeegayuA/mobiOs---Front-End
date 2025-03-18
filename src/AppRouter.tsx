@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AdminLayout from "./pages/Admin/AdminLayout";
-import Login from "./pages/Admin/Login";
+import Login from "./pages/Student/Login";
 import StudentLayout from "./pages/Student/StudentLayout"; 
 import ResetPassword from "./pages/Student/ResetPassword";
 import Confirmation from "./pages/Student/Confirmation";

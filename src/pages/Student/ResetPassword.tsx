@@ -13,8 +13,8 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 p-6">
-      <Card className="w-full max-w-sm md:max-w-md lg:max-w-lg shadow-xl rounded-2xl p-6 md:p-8 bg-white">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 p-2">
+      <Card className="w-full h-full max-w-sm md:max-w-md lg:max-w-lg shadow-xl rounded-2xl  md:p-8 bg-white ">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl md:text-3xl font-extrabold text-gray-900">
             Reset Password
@@ -34,14 +34,14 @@ export default function ResetPassword() {
                 placeholder="example@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="h-12 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="h-12 text-md border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
 
             <Button
               type="submit"
-              className="w-full h-12 text-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-300"
+              className="w-full h-12 text-md bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-2xl transition-all duration-300"
             >
               Send Reset Link
             </Button>
