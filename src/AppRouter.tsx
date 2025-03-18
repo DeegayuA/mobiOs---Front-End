@@ -5,7 +5,7 @@ import ResetPassword from "./pages/Student/ResetPassword";
 import Confirmation from "./pages/Student/Confirmation";
 import QRScanner from "./pages/Student/QRScanner";
 import Attendence from "./pages/Student/Attendence";
-import Profile from "./pages/Student/Profile";
+import StudentProfile from "./pages/Student/Profile";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import AdminDashboard from "./pages/Admin/AdminDashboard";
@@ -42,6 +42,16 @@ export default function AppRouter() {
         <Route path="/admin/add-schedule" element={<AddSchedule />} />
         <Route path="/admin/reports" element={<Reports />} />
         <Route path="/admin/add-student" element={<AddStudent />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/confirmation" element={<Confirmation />} />
+        {/* Student Routes (Mobile View) */}
+        <Route path="/student" element={<StudentLayout />}>
+        <Route path="qr-scanner" element={<QRScanner />} />
+        <Route path="attendence" element={<Attendence />} />
+        <Route path="profile" element={<StudentProfile />} />
+  
+        </Route>
       </Routes>
     </Router>
   );
