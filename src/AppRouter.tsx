@@ -1,5 +1,13 @@
+
+import Login from "./pages/Student/Login";
+import StudentLayout from "./pages/Student/StudentLayout"; 
+import ResetPassword from "./pages/Student/ResetPassword";
+import Confirmation from "./pages/Student/Confirmation";
+import QRScanner from "./pages/Student/QRScanner";
+import Attendence from "./pages/Student/Attendence";
+import Profile from "./pages/Student/Profile";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import Login from "./pages/Admin/Login";
+
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AdminAttendance from "./pages/Admin/AdminAttendance";
 import Course from "./pages/Admin/Course";
@@ -17,7 +25,7 @@ export default function AppRouter() {
   return (
     <Router>
       <Routes>
-        {/* <Route path="/" element={<Login />} /> */}
+
 
         {/* Admin Routes */}
         <Route path="/admin" element={<AdminDashboard />}>
