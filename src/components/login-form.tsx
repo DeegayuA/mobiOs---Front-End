@@ -21,7 +21,7 @@ export function LoginForm({ portalType = "Student", className, ...props }: Login
   return (
     <div
       className={cn(
-        "flex flex-col items-center min-h-screen justify-center p-6",
+        "flex flex-col items-center min-h-screen justify-center w-full",
         portalType === "Admin" ? "bg-gradient-to-br from-blue-50 to-gray-200" : "bg-gray-100",
         className
       )}
@@ -38,7 +38,7 @@ export function LoginForm({ portalType = "Student", className, ...props }: Login
           <form onSubmit={handleLogin}>
             <div className="flex flex-col gap-6 items-center">
              
-              <div className="grid gap-2">
+              <div className="grid gap-2 w-full">
                 <Label htmlFor="email" className="text-gray-700 font-medium text-center">Email</Label>
                 <Input
                   id="email"
@@ -50,7 +50,7 @@ export function LoginForm({ portalType = "Student", className, ...props }: Login
               </div>
 
               
-              <div className="grid gap-2">
+              <div className="grid gap-2 w-full">
                 <Label htmlFor="password" className="text-gray-700 font-medium">Password</Label>
                 <Input
                   id="password"

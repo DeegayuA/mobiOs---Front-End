@@ -8,6 +8,7 @@ import Attendence from "./pages/Student/Attendence";
 import Profile from "./pages/Student/Profile";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
+import AdminLogin from "./pages/Admin/Login";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AdminAttendance from "./pages/Admin/AdminAttendance";
 import Course from "./pages/Admin/Course";
@@ -45,6 +46,7 @@ export default function AppRouter() {
         
 
         {/* Admin Routes */}
+        <Route path="/login" element={<AdminLogin/>}></Route>
         <Route path="/admin" element={<AdminDashboard />}>
           <Route index element={<Navigate to="/admin/dashboard" />} />
         </Route>
