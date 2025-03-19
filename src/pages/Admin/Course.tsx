@@ -33,10 +33,9 @@ export default function AdminCourse() {
   const [activeFilter, setActiveFilter] = useState<string>("courses");
   const [selectedCourse, setSelectedCourse] = useState<keyof typeof data | "all">("all");
   const [selectedModule, setSelectedModule] = useState<string>("all");
-  const [modules, setModules] = useState<string[]>(Object.values(data).flat());
+  const [modules, setModules] = useState<string[]>(selectedCourse === "all" ? [] : (selectedCourse in data ? data[selectedCourse] : []));
   const [filteredData, setFilteredData] = useState(courseData);
   const [searchTerm, setSearchTerm] = useState<string>("");
-
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -60,11 +59,19 @@ export default function AdminCourse() {
     setFilteredData(filtered);
   }, [selectedCourse, selectedModule, searchTerm]);
 
+  useEffect(() => {
+    setModules(selectedCourse === "all" ? [] : data[selectedCourse] || []);
+    if (selectedCourse === "all") {
+      setSelectedModule("all");
+      setSearchTerm("");
+    }
+  }, [selectedCourse]);
+
   return (
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-      <div className="border border-[var(--primary-border-color)] rounded-lg shadow-md xs:rounded-none xl:h-[calc(100vh-10px)] xl:overflow-hidden h-full">
+        <div className="border border-[var(--primary-border-color)] rounded-lg shadow-md xs:rounded-none xl:h-[calc(100vh-10px)] xl:overflow-hidden h-full">
           <header className="flex h-16 shrink-0 items-center gap-2 shadow-md px-4 border-[var(--primary-border-color)] border-b">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4 bg-[var(--primary-border-color)]" />
@@ -87,30 +94,39 @@ export default function AdminCourse() {
             <h3 className="text-lg font-medium mt-4 mb-2 text-left">Filter</h3>
 
             <div className="flex gap-4 mt-4">
-              <Select onValueChange={(value) => setSelectedCourse(value as keyof typeof data | "all")}>
-                <SelectTrigger className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300">
-                  {selectedCourse === "all" ? "Select Course" : selectedCourse}
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Select Course</SelectItem>
-                  {Object.keys(data).map(course => (
-                    <SelectItem key={course} value={course}>{course}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Select onValueChange={setSelectedModule}>
-                <SelectTrigger className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300">
-                  {selectedModule === "all" ? "Select Module" : selectedModule}
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Select Module</SelectItem>
-                  {modules.map(module => (
-                    <SelectItem key={module} value={module}>{module}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <div className="flex-0 min-w-[250px] w-full">
+              <div>
+                {/* <h3 className="text-lg font-medium mb-2 text-left">Course Filter</h3> */}
+                <Select value={selectedCourse} onValueChange={(value) => setSelectedCourse(value as keyof typeof data | "all")}>
+                  <SelectTrigger className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300">
+                    {selectedCourse === "all" ? "Select Course" : selectedCourse}
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Select Course</SelectItem>
+                    {Object.keys(data).map(course => (
+                      <SelectItem key={course} value={course}>{course}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
+              {selectedCourse !== "all" && (
+                <div>
+                  <h3 className="text-lg font-medium mb-2 text-left">Module Filter</h3>
+                  <Select value={selectedModule} onValueChange={setSelectedModule}>
+                    <SelectTrigger className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300">
+                      {selectedModule === "all" ? "Select Module" : selectedModule}
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Select Module</SelectItem>
+                      {modules.map((module) => (
+                        <SelectItem key={module} value={module}>{module}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+
+              <div className="flex-0 min-w-[250px] w-full">
                 <Input
                   type="text"
                   placeholder="Search by Course, Module, or Instructor"

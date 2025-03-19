@@ -33,7 +33,7 @@ export default function AdminAttendance() {
     const allModules = Object.values(data).flat();
     const [selectedCourse, setSelectedCourse] = useState<keyof typeof data | "all">("all");
     const [selectedModule, setSelectedModule] = useState<string>("all");
-    const [modules, setModules] = useState<string[]>(allModules);
+    const [modules, setModules] = useState<string[]>(selectedCourse === "all" ? [] : data[selectedCourse] || []);
     const [filteredData, setFilteredData] = useState(attendanceData);
     const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -58,6 +58,18 @@ export default function AdminAttendance() {
         );
         setFilteredData(filtered);
     }, [selectedCourse, selectedModule, searchTerm]);
+
+    useEffect(() => {
+        setModules(selectedCourse === "all" ? allModules : data[selectedCourse] || []);
+    }, [selectedCourse]);
+
+    const handleCourseChange = (value: keyof typeof data | "all") => {
+        setSelectedCourse(value);
+        if (value === "all") {
+            setSelectedModule("all");
+            setSearchTerm("");  // Optionally reset the search term as well
+        }
+    };
 
     return (
         <SidebarProvider>
@@ -87,7 +99,7 @@ export default function AdminAttendance() {
                         <div className="flex gap-4 px-4 flex-wrap">
                             <div>
                                 <h3 className="text-lg font-medium mb-2  text-left">Course Filter</h3>
-                                <Select value={selectedCourse} onValueChange={(value) => setSelectedCourse(value as keyof typeof data | "all")}>
+                                <Select value={selectedCourse} onValueChange={handleCourseChange}>
                                     <SelectTrigger className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300">
                                         {selectedCourse === "all" ? "Select Course" : selectedCourse}
                                     </SelectTrigger>
@@ -100,20 +112,22 @@ export default function AdminAttendance() {
                                 </Select>
                             </div>
 
-                            <div>
-                                <h3 className="text-lg font-medium mb-2  text-left">Module Filter</h3>
-                                <Select value={selectedModule} onValueChange={setSelectedModule}>
-                                    <SelectTrigger className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300">
-                                        {selectedModule === "all" ? "Select Module" : selectedModule}
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="all">All Modules</SelectItem>
-                                        {modules.map(module => (
-                                            <SelectItem key={module} value={module}>{module}</SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            </div>
+                            {selectedCourse !== "all" && (
+                                <div>
+                                    <h3 className="text-lg font-medium mb-2 text-left">Module Filter</h3>
+                                    <Select value={selectedModule} onValueChange={setSelectedModule}>
+                                        <SelectTrigger className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300">
+                                            {selectedModule === "all" ? "Select Module" : selectedModule}
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="all">All Modules</SelectItem>
+                                            {modules.map(module => (
+                                                <SelectItem key={module} value={module}>{module}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            )}
 
                             <div className="flex-0 min-w-[250px] w-full">
                                 <h3 className="text-lg font-medium mb-2 text-left">Search</h3>
