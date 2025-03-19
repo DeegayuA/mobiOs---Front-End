@@ -14,11 +14,11 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    vitePluginFaviconsInject('.src/assets/letter-e.png'),
+    vitePluginFaviconsInject('src/assets/letter-e.png'),
     ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve(__dirname, "/src"),
     },
   },
 })
