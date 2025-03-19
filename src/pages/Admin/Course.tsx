@@ -51,10 +51,10 @@ export default function AdminCourse() {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <div className="border border-[var(--primary-border-color)] rounded-lg shadow-md">
+        <div className="border border-[var(--primary-border-color)] rounded-lg shadow-md xs:rounded-none">
           <header className="flex h-16 shrink-0 items-center gap-2 shadow-md px-4 border-[var(--primary-border-color)] border-b">
             <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 h-4" />
+            <Separator orientation="vertical" className="mr-2 h-4 bg-[var(--primary-border-color)]" />
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
@@ -74,7 +74,7 @@ export default function AdminCourse() {
             <h3 className="text-lg font-medium mt-4 mb-2 text-left">Filter</h3>
 
             <div className="flex gap-4 mt-4">
-              <Select onValueChange={setSelectedCourse}>
+              <Select onValueChange={(value) => setSelectedCourse(value as keyof typeof data | "all")}>
                 <SelectTrigger className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300">
                   {selectedCourse === "all" ? "Select Course" : selectedCourse}
                 </SelectTrigger>

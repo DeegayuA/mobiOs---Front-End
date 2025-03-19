@@ -27,6 +27,7 @@ const courseData = Array.from({ length: 30 }, (_, i) => ({
   module: i % 3 === 0 ? "Deep Learning" : i % 3 === 1 ? "Machine Learning" : "Cloud Security",
   instructor: `Instructor ${i + 1}`,
   classDate: `2025-04-${String(1 + (i % 30)).padStart(2, '0')}`,
+  totalStudents: Math.floor(Math.random() * 50) + 1, // Example random student count
 }));
 
 export default function AdminDashboard() {
@@ -52,10 +53,10 @@ export default function AdminDashboard() {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <div className="border border-[var(--primary-border-color)] rounded-lg shadow-md">
-          <header className="flex h-16 shrink-0 items-center gap-2 shadow-md px-4 border-[var(--primary-border-color)] border-b">
+      <div className="border border-[var(--primary-border-color)] rounded-lg shadow-md xs:rounded-none">
+      <header className="flex h-16 shrink-0 items-center gap-2 shadow-md px-4 border-[var(--primary-border-color)] border-b">
             <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 h-4" />
+            <Separator orientation="vertical" className="mr-2 h-4 bg-[var(--primary-border-color)]" />
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
@@ -126,7 +127,7 @@ export default function AdminDashboard() {
             <div className="flex gap-4 px-4">
               <div>
                 <h3 className="text-lg font-medium mb-2  text-left">Course Filter</h3>
-                <Select  value={selectedCourse} onValueChange={setSelectedCourse}>
+                <Select  value={selectedCourse} onValueChange={(value) => setSelectedCourse(value as keyof typeof data | "all")}>
                   <SelectTrigger className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300">
                     {selectedCourse === "all" ? "Select Course" : selectedCourse}
                   </SelectTrigger>

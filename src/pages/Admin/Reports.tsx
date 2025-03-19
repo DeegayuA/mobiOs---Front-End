@@ -61,27 +61,23 @@ export function Reports() {
         <SidebarProvider>
             <AppSidebar />
             <SidebarInset>
-                <div className="border border-[var(--primary-border-color)] rounded-lg shadow-md">
+                <div className="border border-[var(--primary-border-color)] rounded-lg shadow-md xs:rounded-none">
                     <header className="flex h-16 shrink-0 items-center gap-2 shadow-md px-4 border-[var(--primary-border-color)] border-b">
-                        <div className="flex items-center gap-2 px-4">
-                            <SidebarTrigger className="-ml-1" />
-                            <Separator orientation="vertical" className="mr-2 h-4" />
-                            <Breadcrumb>
-                                <BreadcrumbList>
+                                <SidebarTrigger className="-ml-1" />
+                                <Separator orientation="vertical" className="mr-2 h-4 bg-[var(--primary-border-color)]" />
+                                <Breadcrumb>
+                                  <BreadcrumbList>
                                     <BreadcrumbItem className="hidden md:block">
-                                        <BreadcrumbLink href="#">
-                                            Admin
-                                        </BreadcrumbLink>
+                                      <BreadcrumbLink href="#">Programs</BreadcrumbLink>
                                     </BreadcrumbItem>
                                     <BreadcrumbSeparator className="hidden md:block" />
                                     <BreadcrumbItem>
-                                        <BreadcrumbPage>PROFILE</BreadcrumbPage>
-                                        <BreadcrumbPage className="absolute right-5">Hi! admin</BreadcrumbPage>
+                                      <BreadcrumbPage>Course</BreadcrumbPage>
                                     </BreadcrumbItem>
-                                </BreadcrumbList>
-                            </Breadcrumb>
-                        </div>
-                    </header>
+                                  </BreadcrumbList>
+                                </Breadcrumb>
+                                <span className="ml-auto font-medium text-gray-600">Hi! Admin</span>
+                              </header>
                     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
                         <div className="flex flex-col gap-6 p-6">
                             <h2 className="text-xl font-semibold uppercase">PROFILE</h2>

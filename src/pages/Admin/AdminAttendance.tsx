@@ -49,10 +49,10 @@ export default function Course() {
         <SidebarProvider>
             <AppSidebar />
             <SidebarInset>
-                <div className="border border-[var(--primary-border-color)] rounded-lg shadow-md">
-                    <header className="flex h-16 shrink-0 items-center gap-2 shadow-md px-4 border-[var(--primary-border-color)] border-b">
+            <div className="border border-[var(--primary-border-color)] rounded-lg shadow-md xs:rounded-none">
+            <header className="flex h-16 shrink-0 items-center gap-2 shadow-md px-4 border-[var(--primary-border-color)] border-b">
                         <SidebarTrigger className="-ml-1" />
-                        <Separator orientation="vertical" className="mr-2 h-4" />
+            <Separator orientation="vertical" className="mr-2 h-4 bg-[var(--primary-border-color)]" />
                         <Breadcrumb>
                             <BreadcrumbList>
                                 <BreadcrumbItem className="hidden md:block">
@@ -73,7 +73,7 @@ export default function Course() {
                         <div className="flex gap-2 py-4 px-4">
                             <div className="flex-0">
                                 <h3 className="text-lg font-medium mb-2 min-w-[150px]  text-left">Course Filter</h3>
-                                <Select value={selectedCourse} onValueChange={setSelectedCourse}>
+                                <Select value={selectedCourse} onValueChange={(value) => setSelectedCourse(value as keyof typeof data | "all")}>
                                     <SelectTrigger className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300">
                                         {selectedCourse === "all" ? "Select Course" : selectedCourse}
                                     </SelectTrigger>
