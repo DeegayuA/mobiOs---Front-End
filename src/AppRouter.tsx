@@ -19,6 +19,7 @@ import { AddModule } from "./pages/Admin/AddModule";
 import { AddSchedule } from "./pages/Admin/AddSchedule";
 import { Reports } from "./pages/Admin/Reports";
 import { AddStudent } from "./pages/Admin/AddStudent";
+import AdminLogin from "./pages/Admin/Login";
 // import Profile from "./pages/Admin/Profile";
 
 export default function AppRouter() {
@@ -28,7 +29,7 @@ export default function AppRouter() {
 
 
         {/* Admin Routes */}
-        <Route path="/admin" element={<AdminDashboard />}>
+        <Route path="/admin" element={<AdminLogin />}>
           <Route index element={<Navigate to="/admin/dashboard" />} />
         </Route>
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
@@ -43,6 +44,7 @@ export default function AppRouter() {
         <Route path="/admin/reports" element={<Reports />} />
         <Route path="/admin/add-student" element={<AddStudent />} />
         <Route path="/" element={<Login />} />
+        <Route path="/admin" element={<AdminLogin />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/confirmation" element={<Confirmation />} />
         {/* Student Routes (Mobile View) */}
