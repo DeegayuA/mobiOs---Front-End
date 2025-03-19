@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "../../components/ui/breadcrumb";
 import { Separator } from "../../components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "../../components/ui/sidebar";
@@ -36,6 +37,18 @@ export default function AdminCourse() {
   const [filteredData, setFilteredData] = useState(courseData);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const heightAdjustment = 120; 
+  const rowsPerPage = Math.floor((window.innerHeight - heightAdjustment) / 50); 
+
+  // Pagination logic
+  const indexOfLastRow = currentPage * rowsPerPage;
+  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+  const currentRows = filteredData.slice(indexOfFirstRow, indexOfLastRow);
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+
   useEffect(() => {
     let filtered = courseData.filter((item) =>
       (selectedCourse === "all" || item.course === selectedCourse) &&
@@ -51,7 +64,7 @@ export default function AdminCourse() {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <div className="border border-[var(--primary-border-color)] rounded-lg shadow-md xs:rounded-none">
+      <div className="border border-[var(--primary-border-color)] rounded-lg shadow-md xs:rounded-none xl:h-[calc(100vh-10px)] xl:overflow-hidden h-full">
           <header className="flex h-16 shrink-0 items-center gap-2 shadow-md px-4 border-[var(--primary-border-color)] border-b">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4 bg-[var(--primary-border-color)]" />
@@ -108,36 +121,61 @@ export default function AdminCourse() {
               </div>
             </div>
 
-            <div className="overflow-x-auto bg-white shadow-md rounded-lg p-4 mt-4 text-left border border-[var(--primary-border-color)]">
-              <Table>
-
-
-
-                <TableBody>
-                  <TableRow>
-                    <TableHead>Course Name</TableHead>
-                    <TableHead>Module</TableHead>
-                    <TableHead>Class Date</TableHead>
-                    <TableHead>Instructor</TableHead>
-                    <TableHead>Action</TableHead>
-                  </TableRow>
-                  {filteredData.map((row, index) => (
-                    <TableRow key={index} className="hover:bg-gray-100">
-                      <TableCell>{row.course}</TableCell>
-                      <TableCell>{row.module}</TableCell>
-                      <TableCell>{row.classDate}</TableCell>
-                      <TableCell>{row.instructor}</TableCell>
-                      <TableCell>
-                        <Button variant="link" size="sm">View</Button>
-                        <span className="mx-1">|</span>
-                        <Button variant="link" size="sm">Edit</Button>
-                        <span className="mx-1">|</span>
-                        <Button variant="link" size="sm">Add Module</Button>
-                      </TableCell>
+            <motion.div
+              key={currentPage}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="overflow-x-auto bg-white shadow-md rounded-lg p-4 mt-4 text-left border border-[var(--primary-border-color)]">
+                <Table>
+                  <TableBody>
+                    <TableRow>
+                      <TableHead>Course Name</TableHead>
+                      <TableHead>Module</TableHead>
+                      <TableHead>Class Date</TableHead>
+                      <TableHead>Instructor</TableHead>
+                      <TableHead>Action</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                    {currentRows.map((row, index) => (
+                      <TableRow key={index} className="hover:bg-gray-100">
+                        <TableCell>{row.course}</TableCell>
+                        <TableCell>{row.module}</TableCell>
+                        <TableCell>{row.classDate}</TableCell>
+                        <TableCell>{row.instructor}</TableCell>
+                        <TableCell>
+                          <Button variant="link" size="sm">View</Button>
+                          <span className="mx-1">|</span>
+                          <Button variant="link" size="sm">Edit</Button>
+                          <span className="mx-1">|</span>
+                          <Button variant="link" size="sm">Add Module</Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </motion.div>
+
+            <div className="flex align-center justify-center gap-4 items-center mt-4">
+              <button
+                onClick={() => setCurrentPage(currentPage > 1 ? currentPage - 1 : currentPage)}
+                disabled={currentPage === 1}
+                className="px-4 py-2 bg-[var(--accent)] text-secondary rounded-lg"
+              >
+                Previous
+              </button>
+              <span>
+                Page {currentPage} of {totalPages}
+              </span>
+              <button
+                onClick={() => setCurrentPage(currentPage < totalPages ? currentPage + 1 : currentPage)}
+                disabled={currentPage === totalPages}
+                className="px-4 py-2 bg-[var(--accent)] text-secondary rounded-lg"
+              >
+                Next
+              </button>
             </div>
           </div>
         </div>

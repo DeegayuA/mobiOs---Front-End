@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList } from "../../components/ui/breadcrumb";
 import { Separator } from "../../components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "../../components/ui/sidebar";
@@ -12,6 +13,13 @@ const studentsData = [
   { name: "John Doe", id: "S001", mobile: "1234567890", email: "john@example.com" },
   { name: "Jane Smith", id: "S002", mobile: "2345678901", email: "jane@example.com" },
   { name: "Mark Johnson", id: "S003", mobile: "3456789012", email: "mark@example.com" },
+  { name: "Alice Brown", id: "S004", mobile: "4567890123", email: "alice@example.com" },
+  { name: "Bob White", id: "S005", mobile: "5678901234", email: "bob@example.com" },
+  { name: "Charlie Black", id: "S006", mobile: "6789012345", email: "charlie@example.com" },
+  { name: "David Green", id: "S007", mobile: "7890123456", email: "david@example.com" },
+  { name: "Emily Red", id: "S008", mobile: "8901234567", email: "emily@example.com" },
+  { name: "Frank Blue", id: "S009", mobile: "9012345678", email: "frank@example.com" },
+  { name: "Grace Yellow", id: "S010", mobile: "0123456789", email: "grace@example.com" },
 ];
 
 const coursesData = [
@@ -24,6 +32,9 @@ export default function AdminStudents() {
   const [selectedStudent, setSelectedStudent] = useState("all");
   const [selectedCourse, setSelectedCourse] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const heightAdjustment = 200;
+  const rowsPerPage = Math.floor((window.innerHeight - heightAdjustment) / 50); // Adjust for your layout
 
   const filteredData = studentsData.filter((student) =>
     (selectedStudent === "all" || student.name === selectedStudent) &&
@@ -31,6 +42,11 @@ export default function AdminStudents() {
     (student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       student.id.toLowerCase().includes(searchTerm.toLowerCase()))
   );
+
+  const indexOfLastRow = currentPage * rowsPerPage;
+  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+  const currentRows = filteredData.slice(indexOfFirstRow, indexOfLastRow);
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
 
   return (
     <SidebarProvider>
@@ -50,7 +66,7 @@ export default function AdminStudents() {
             <span className="ml-auto font-medium text-gray-600">Welcome back, Admin!</span>
           </header>
 
-          <div className="flex flex-1 flex-col p-8 space-y-6">
+          <div className="flex flex-1 flex-col px-6 py-8 space-y-4">
             <h2 className="text-2xl font-semibold  text-left">STUDENTS</h2>
 
             <div className="flex justify-between mt-4">
@@ -95,33 +111,61 @@ export default function AdminStudents() {
             </div>
 
             {/* Table */}
-            <div className="overflow-x-auto bg-white shadow-md rounded-lg p-4 mt-6  text-left border border-[var(--primary-border-color)]">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Student Name</TableHead>
-                    <TableHead>Student ID</TableHead>
-                    <TableHead>Mobile No</TableHead>
-                    <TableHead>Email ID</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredData.map((student, index) => (
-                    <TableRow key={index} className="odd:bg-gray-100 even:bg-white">
-                      <TableCell className="px-4 py-2">{student.name}</TableCell>
-                      <TableCell className="px-4 py-2">{student.id}</TableCell>
-                      <TableCell className="px-4 py-2">{student.mobile}</TableCell>
-                      <TableCell className="px-4 py-2">{student.email}</TableCell>
-                      <TableCell className="space-y-1">
-                        <Button variant="link" size="sm" title="Reset student password">Reset Password</Button>
-                        <Button variant="link" size="sm">View</Button>
-                        <Button variant="link" size="sm">Edit</Button>
-                      </TableCell>
+            <motion.div
+              key={currentPage} 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div className="overflow-x-auto bg-white shadow-md rounded-lg p-4 mt-6  text-left border border-[var(--primary-border-color)]">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Student Name</TableHead>
+                      <TableHead>Student ID</TableHead>
+                      <TableHead>Mobile No</TableHead>
+                      <TableHead>Email ID</TableHead>
+                      <TableHead>Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {currentRows.map((student, index) => (
+                      <TableRow key={index} className="odd:bg-gray-100 even:bg-white">
+                        <TableCell className="px-4 py-2">{student.name}</TableCell>
+                        <TableCell className="px-4 py-2">{student.id}</TableCell>
+                        <TableCell className="px-4 py-2">{student.mobile}</TableCell>
+                        <TableCell className="px-4 py-2">{student.email}</TableCell>
+                        <TableCell className="space-y-1">
+                          <Button variant="link" size="sm" title="Reset student password">Reset Password</Button>
+                          <Button variant="link" size="sm">View</Button>
+                          <Button variant="link" size="sm">Edit</Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </motion.div>
+
+            <div className="flex align-center justify-center gap-4 items-center">
+              <button
+                onClick={() => setCurrentPage(currentPage > 1 ? currentPage - 1 : currentPage)}
+                disabled={currentPage === 1}
+                className="px-4 py-2 bg-[var(--accent)] text-secondary rounded-lg"
+              >
+                Previous
+              </button>
+              <span>
+                Page {currentPage} of {totalPages}
+              </span>
+              <button
+                onClick={() => setCurrentPage(currentPage < totalPages ? currentPage + 1 : currentPage)}
+                disabled={currentPage === totalPages}
+                className="px-4 py-2 bg-[var(--accent)] text-secondary rounded-lg"
+              >
+                Next
+              </button>
             </div>
           </div>
         </div>

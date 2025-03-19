@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/ca
 import { BreadcrumbList, BreadcrumbPage } from "../../components/ui/breadcrumb";
 import { Select, SelectTrigger, SelectContent, SelectItem } from "../../components/ui/select"; // Import Select components
 import { Input } from "../../components/ui/input"; // Import Input component
+import { motion } from "framer-motion";
 
 const data = {
   "Artificial Intelligence": ["Deep Learning", "Neural Networks", "AI Ethics"],
@@ -38,6 +39,18 @@ export default function AdminDashboard() {
   const [filteredData, setFilteredData] = useState(courseData);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const heightAdjustment = 210; 
+  const rowsPerPage = Math.floor((window.innerHeight - heightAdjustment) / 50); 
+
+  // Pagination logic
+  const indexOfLastRow = currentPage * rowsPerPage;
+  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+  const currentRows = filteredData.slice(indexOfFirstRow, indexOfLastRow);
+
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+
   useEffect(() => {
     let filtered = courseData.filter((item) =>
       (selectedCourse === "all" || item.course === selectedCourse) &&
@@ -53,7 +66,7 @@ export default function AdminDashboard() {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-      <div className="border border-[var(--primary-border-color)] rounded-lg shadow-md xs:rounded-none">
+      <div className="border border-[var(--primary-border-color)] rounded-lg shadow-md xs:rounded-none xl:h-[calc(100vh-10px)] xl:overflow-hidden h-full">
       <header className="flex h-16 shrink-0 items-center gap-2 shadow-md px-4 border-[var(--primary-border-color)] border-b">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4 bg-[var(--primary-border-color)]" />
@@ -70,7 +83,7 @@ export default function AdminDashboard() {
             </Breadcrumb>
             <span className="ml-auto font-medium text-gray-600">Hi! Admin</span>
           </header>
-          <div className="flex flex-1 flex-col gap-4 p-6 ">
+          <div className="flex flex-1 flex-col gap-4 p-6 overflow-y-auto">
             <h2 className="text-2xl font-semibold uppercase px-4 text-left">DASHBOARD</h2>
 
             <div className="grid px-4 grid-cols-2 xl:grid-cols-6 sm:grid-cols-3 gap-4 md:grid-cols-4 gap-4 gap-4 flex-wrap max-w-full min-w-[200px]">
@@ -79,7 +92,7 @@ export default function AdminDashboard() {
                   <CardTitle>Number of Active Courses</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-4xl font-bold">{Object.keys(data).length}</p>
+                  <p className="text-4xl font-bold text-[var(--accent)]">{Object.keys(data).length}</p>
                 </CardContent>
               </Card>
               <Card className="border border-[var(--primary-border-color)]">
@@ -87,7 +100,7 @@ export default function AdminDashboard() {
                   <CardTitle>Number of Active Modules</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-4xl font-bold">{Object.values(data).flat().length}</p>
+                  <p className="text-4xl font-bold text-[var(--accent)]">{Object.values(data).flat().length}</p>
                 </CardContent>
               </Card>
               <Card className="border border-[var(--primary-border-color)]">
@@ -95,15 +108,15 @@ export default function AdminDashboard() {
                   <CardTitle>Number of Active Students</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-4xl font-bold">{courseData.length}</p>
+                  <p className="text-4xl font-bold text-[var(--accent)]">{courseData.length}</p>
                 </CardContent>
               </Card>
               <Card className="border border-[var(--primary-border-color)]">
                 <CardHeader>
-                  <CardTitle>Number of Instructors</CardTitle>
+                  <CardTitle>Number of Active Instructors</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-4xl font-bold">5</p> {/* Example Static Value */}
+                  <p className="text-4xl font-bold text-[var(--accent)]">5</p> {/* Example Static Value */}
                 </CardContent>
               </Card>
               <Card className="border border-[var(--primary-border-color)]">
@@ -111,7 +124,7 @@ export default function AdminDashboard() {
                   <CardTitle>Total Classes Conducted</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-4xl font-bold">{courseData.length}</p>
+                  <p className="text-4xl font-bold text-[var(--accent)]">{courseData.length}</p>
                 </CardContent>
               </Card>
               <Card className="border border-[var(--primary-border-color)]">
@@ -119,12 +132,12 @@ export default function AdminDashboard() {
                   <CardTitle>Total Attendance Count</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-4xl font-bold">{courseData.reduce((sum, item) => sum + item.totalStudents, 0)}</p>
+                  <p className="text-4xl font-bold text-[var(--accent)]">{courseData.reduce((sum, item) => sum + item.totalStudents, 0)}</p>
                 </CardContent>
               </Card>
             </div>
 
-            <div className="flex gap-4 px-4">
+            <div className="flex gap-4 px-4 flex-wrap">
               <div>
                 <h3 className="text-lg font-medium mb-2  text-left">Course Filter</h3>
                 <Select  value={selectedCourse} onValueChange={(value) => setSelectedCourse(value as keyof typeof data | "all")}>
@@ -156,38 +169,66 @@ export default function AdminDashboard() {
               </div>
 
               <div className="flex-0 min-w-[250px] w-full">
-                <h3 className="text-lg font-medium mb-2 min-w-[200px]  text-left">Search</h3>
+                <h3 className="text-lg font-medium mb-2 text-left">Search</h3>
                 <Input
                   type="text"
                   placeholder="Search by Course, Module, or Instructor"
-                  className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300 w-full"
+                  className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300 min-w-[200px] sm:min-w-100 w-full"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
             </div>
 
-            <div className="overflow-x-auto bg-white shadow-md rounded-lg mx-4 p-4 text-left border border-[var(--primary-border-color)]">
-              <Table className="px-4 border-collapse w-full">
-                <TableHeader className="color-[var(--primary-border-color)]">
-                  <TableRow>
-                    <TableHead>Courses</TableHead>
-                    <TableHead>Modules</TableHead>
-                    <TableHead>Class Dates</TableHead>
-                    <TableHead>Instructor</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredData.map((row, index) => (
-                    <TableRow key={index} className="hover:bg-gray-100">
-                      <TableCell>{row.course}</TableCell>
-                      <TableCell>{row.module}</TableCell>
-                      <TableCell>{row.classDate}</TableCell>
-                      <TableCell>{row.instructor}</TableCell>
+            <motion.div
+              key={currentPage} 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div className="overflow-x-auto bg-white shadow-md rounded-lg mx-4 p-4 text-left border border-[var(--primary-border-color)]">
+                <Table className="px-4 border-collapse w-full">
+                  <TableHeader className="color-[var(--primary-border-color)]">
+                    <TableRow>
+                      <TableHead>Courses</TableHead>
+                      <TableHead>Modules</TableHead>
+                      <TableHead>Class Dates</TableHead>
+                      <TableHead>Instructor</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {currentRows.map((row, index) => (
+                      <TableRow key={index} className="hover:bg-gray-100">
+                        <TableCell>{row.course}</TableCell>
+                        <TableCell>{row.module}</TableCell>
+                        <TableCell>{row.classDate}</TableCell>
+                        <TableCell>{row.instructor}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </motion.div>
+            
+            <div className="flex align-center justify-center gap-4 items-center ">
+              <button
+                onClick={() => setCurrentPage(currentPage > 1 ? currentPage - 1 : currentPage)}
+                disabled={currentPage === 1}
+                className="px-4 py-2 bg-[var(--accent)] text-secondary rounded-lg"
+              >
+                Previous
+              </button>
+              <span>
+                Page {currentPage} of {totalPages}
+              </span>
+              <button
+                onClick={() => setCurrentPage(currentPage < totalPages ? currentPage + 1 : currentPage)}
+                disabled={currentPage === totalPages}
+                className="px-4 py-2 bg-[var(--accent)] text-secondary rounded-lg"
+              >
+                Next
+              </button>
             </div>
           </div>
         </div>
