@@ -49,10 +49,10 @@ export default function Course() {
         <SidebarProvider>
             <AppSidebar />
             <SidebarInset>
-                <div>
-                    <header className="flex h-16 shrink-0 items-center gap-2 elevation-1 px-4">
+            <div className="border border-[var(--primary-border-color)] rounded-lg shadow-md xs:rounded-none">
+            <header className="flex h-16 shrink-0 items-center gap-2 shadow-md px-4 border-[var(--primary-border-color)] border-b">
                         <SidebarTrigger className="-ml-1" />
-                        <Separator orientation="vertical" className="mr-2 h-4" />
+            <Separator orientation="vertical" className="mr-2 h-4 bg-[var(--primary-border-color)]" />
                         <Breadcrumb>
                             <BreadcrumbList>
                                 <BreadcrumbItem className="hidden md:block">
@@ -68,13 +68,13 @@ export default function Course() {
                     </header>
 
                     <div className="flex flex-1 flex-col p-6">
-                        <h2 className="text-2xl font-semibold uppercase px-4">Course Management</h2>
-                        <h3 className="text-lg font-medium mt-4 mb-2 px-4">Filter</h3>
+                        <h2 className="text-2xl font-semibold uppercase px-4  text-left">Course Management</h2>
+                        <h3 className="text-lg font-medium mt-4 mb-2 px-4  text-left">Filter</h3>
                         <div className="flex gap-2 py-4 px-4">
                             <div className="flex-0">
-                                <h3 className="text-lg font-medium mb-2 min-w-[150px]">Course Filter</h3>
-                                <Select value={selectedCourse} onValueChange={setSelectedCourse}>
-                                    <SelectTrigger className="border rounded p-3 elevation-1 hover:elevation-2 transition-all duration-300">
+                                <h3 className="text-lg font-medium mb-2 min-w-[150px]  text-left">Course Filter</h3>
+                                <Select value={selectedCourse} onValueChange={(value) => setSelectedCourse(value as keyof typeof data | "all")}>
+                                    <SelectTrigger className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300">
                                         {selectedCourse === "all" ? "Select Course" : selectedCourse}
                                     </SelectTrigger>
                                     <SelectContent>
@@ -87,9 +87,9 @@ export default function Course() {
                             </div>
 
                             <div className="flex-0">
-                                <h3 className="text-lg font-medium mb-2 min-w-[150px]">Module Filter</h3>
+                                <h3 className="text-lg font-medium mb-2 min-w-[150px]  text-left">Module Filter</h3>
                                 <Select value={selectedModule} onValueChange={setSelectedModule}>
-                                    <SelectTrigger className="border rounded p-3 elevation-1 hover:elevation-2 transition-all duration-300">
+                                    <SelectTrigger className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300">
                                         {selectedModule === "all" ? "Select Module" : selectedModule}
                                     </SelectTrigger>
                                     <SelectContent>
@@ -100,22 +100,22 @@ export default function Course() {
                                     </SelectContent>
                                 </Select>
                             </div>
-                            <div className="flex-0 min-w-[200px] w-full">
-                                <h3 className="text-lg font-medium mb-2 min-w-[200px]">Search</h3>
+                            <div className="flex-0 min-w-[250px] w-full">
+                                <h3 className="text-lg font-medium mb-2 min-w-[200px]  text-left">Search</h3>
 
                                 <Input
                                     type="text"
                                     placeholder="Search by Course, Module, or Instructor"
-                                    className="border rounded p-3 elevation-1 hover:elevation-2 transition-all duration-300 w-full"
+                                    className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300 w-full"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
                             </div>
                         </div>
 
-                        <div className="overflow-x-auto bg-white elevation-1 rounded-lg p-4 mt-4">
+                        <div className="overflow-x-auto bg-white shadow-md rounded-lg mx-4 p-4 text-left border border-[var(--primary-border-color)]">
                             <Table>
-                                <TableHeader>
+                                <TableHeader className="color-[var(--primary-border-color)]">
                                     <TableRow>
                                         <TableHead>Course</TableHead>
                                         <TableHead>Module</TableHead>
@@ -125,7 +125,7 @@ export default function Course() {
                                 </TableHeader>
                                 <TableBody>
                                     {filteredData.map((row, index) => (
-                                        <TableRow key={index}>
+                                        <TableRow key={index} className="hover:bg-gray-100">
                                             <TableCell>{row.course}</TableCell>
                                             <TableCell>{row.module}</TableCell>
                                             <TableCell>{row.classDate}</TableCell>

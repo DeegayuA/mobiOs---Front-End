@@ -66,6 +66,27 @@ export default function AdminClassSchedule() {
       module: "Network Security",
       moduleId: "NE201",
       qrCode: "https://placehold.co/150x150.png"
+    },
+    {
+      courseName: "Quantum Computing",
+      courseId: "QC101",
+      module: "Quantum Algorithms",
+      moduleId: "QC201",
+      qrCode: "https://placehold.co/150x150.png"
+    },
+    {
+      courseName: "Biochemistry",
+      courseId: "BC101",
+      module: "Bioinformatics",
+      moduleId: "BC201",
+      qrCode: "https://placehold.co/150x150.png"
+    },
+    {
+      courseName: "Network Engineering",
+      courseId: "NE101",
+      module: "Network Security",
+      moduleId: "NE201",
+      qrCode: "https://placehold.co/150x150.png"
     }
   ];
 
@@ -73,10 +94,10 @@ export default function AdminClassSchedule() {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <div>
-          <header className="flex h-16 shrink-0 items-center gap-2 shadow-md px-4">
+      <div className="border border-[var(--primary-border-color)] rounded-lg shadow-md xs:rounded-none">
+      <header className="flex h-16 shrink-0 items-center gap-2 shadow-md px-4 border-[var(--primary-border-color)] border-b">
             <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 h-4" />
+            <Separator orientation="vertical" className="mr-2 h-4 bg-[var(--primary-border-color)]" />
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
@@ -94,7 +115,7 @@ export default function AdminClassSchedule() {
           <div className="flex flex-1 flex-col p-6">
             <h2 className="text-2xl font-semibold">PROGRAMS — CLASS SCHEDULE</h2>
 
-            <div className="overflow-x-auto bg-white shadow-md rounded-lg p-4">
+            <div className="overflow-x-auto bg-white shadow-md rounded-lg p-4 mt-4 border border-[var(--primary-border-color)]">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -108,7 +129,7 @@ export default function AdminClassSchedule() {
                 </TableHeader>
                 <TableBody>
                   {classScheduleData.map((row, index) => (
-                    <TableRow key={index}>
+                    <TableRow key={index} className="hover:bg-gray-100">
                       <TableCell>{row.courseName}</TableCell>
                       <TableCell>{row.courseId}</TableCell>
                       <TableCell>{row.module}</TableCell>
@@ -116,9 +137,9 @@ export default function AdminClassSchedule() {
                       <TableCell><img src={row.qrCode} alt="QR Code" className="w-16 h-16" /></TableCell>
                       <TableCell>
                         <Button variant="link" size="sm">View</Button> |
-                        <Button 
-                          variant="link" 
-                          size="sm" 
+                        <Button
+                          variant="link"
+                          size="sm"
                           onClick={() => handleGenerateQR(row.courseName, row.module)}
                         >
                           Generate QR

@@ -36,10 +36,10 @@ export default function AdminStudents() {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <div>
-          <header className="flex h-16 items-center gap-4 shadow-md px-6">
+      <div className="border border-[var(--primary-border-color)] rounded-lg shadow-md xs:rounded-none">
+          <header className="flex h-16 shrink-0 items-center gap-2 shadow-md px-4 border-[var(--primary-border-color)] border-b">
             <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 h-4" />
+            <Separator orientation="vertical" className="mr-2 h-4 bg-[var(--primary-border-color)]" />
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
@@ -51,13 +51,13 @@ export default function AdminStudents() {
           </header>
 
           <div className="flex flex-1 flex-col p-8 space-y-6">
-            <h2 className="text-2xl font-semibold">STUDENTS</h2>
+            <h2 className="text-2xl font-semibold  text-left">STUDENTS</h2>
 
             <div className="flex justify-between mt-4">
               {/* Filter Section */}
               <div className="flex gap-4 max-w-[500px]">
                 <Select value={selectedStudent} onValueChange={setSelectedStudent}>
-                  <SelectTrigger className="w-full min-w-[150px] w-[200px]">
+                                    <SelectTrigger className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300">
                     {selectedStudent === "all" ? "Select Student" : selectedStudent}
                   </SelectTrigger>
                   <SelectContent>
@@ -68,7 +68,7 @@ export default function AdminStudents() {
                   </SelectContent>
                 </Select>
                 <Select value={selectedCourse} onValueChange={setSelectedCourse}>
-                  <SelectTrigger className="w-full min-w-[150px] w-[200px]">
+                                    <SelectTrigger className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300">
                     {selectedCourse === "all" ? "Select Course" : selectedCourse}
                   </SelectTrigger>
                   <SelectContent>
@@ -81,7 +81,7 @@ export default function AdminStudents() {
                 <Input
                   type="text"
                   placeholder="Search"
-                  className="w-full min-w-[150px] w-[250px]"
+                  className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300 w-full"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -89,13 +89,13 @@ export default function AdminStudents() {
 
               {/* Buttons */}
               <div className="flex gap-2">
-                <Button variant="default">Add Student</Button>
+                <Button variant="accent">Add Student</Button>
                 <Button variant="secondary">Bulk Upload</Button>
               </div>
             </div>
 
             {/* Table */}
-            <div className="overflow-x-auto bg-white shadow-md rounded-lg p-4 mt-6">
+            <div className="overflow-x-auto bg-white shadow-md rounded-lg p-4 mt-6  text-left border border-[var(--primary-border-color)]">
               <Table>
                 <TableHeader>
                   <TableRow>
