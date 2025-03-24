@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import path from "path"
 import tsconfigPaths from "vite-tsconfig-paths";
-// import vitePluginFaviconsInject from "vite-plugin-favicons-inject";
+import vitePluginFaviconsInject from "vite-plugin-favicons-inject";
 
 
 
@@ -11,13 +11,12 @@ import tsconfigPaths from "vite-tsconfig-paths";
 export default defineConfig({
   plugins: [
     react(),
-    tsconfigPaths(),
-    tailwindcss()
-    
+    tailwindcss(),
+    vitePluginFaviconsInject('src/assets/letter-e.png'),
     ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve(__dirname, "/src"),
     },
   },
 })

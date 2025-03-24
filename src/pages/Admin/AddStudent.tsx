@@ -18,19 +18,30 @@ export function AddStudent() {
         
     
         defaultValues: {
-            studentName: "",
-            studentId: "",
-            mobile: "",
-            email:""
-        }
+            courseName: "",
+            courseId: "",
+            courseDescription: "",
+            startDate: "",
+            endDate: "",
+            moduleName: "",
+            moduleCode: "",
+            date: "",
+            fromTime: "",
+            toTime: "",
+            classSchedule: "",
+            studentName: "", // Added field
+            studentId: "",   // Added field
+            mobileNumber: "", // Added field
+            email: "",        // Added field
+        },
     });
 
-    // function onSubmit(values) {
-    //     console.log(values);
-    // }
+    function onSubmit(values: any) {
+        console.log(values);
+    }
 
     const [courseName, setCourseName] = useState("");
-    const [courses, setCourses] = useState([]);
+    const [courses, setCourses] = useState<string[]>([]);
 
     // const handleAddCourse = () => {
     //     if (courseName.trim() !== "") {
@@ -39,9 +50,9 @@ export function AddStudent() {
     //     }
     // };
 
-    // const handleRemoveCourse = (index) => {
-    //     setCourses(courses.filter((_, i) => i !== index));
-    // };
+    const handleRemoveCourse = (index: number) => {
+        setCourses(courses.filter((_, i) => i !== index));
+    };
 
     return (
         <SidebarProvider>
