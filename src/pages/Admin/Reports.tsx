@@ -8,10 +8,9 @@ import { Input } from "../../components/ui/input";
 
 "use client"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+// import { zodResolver } from "@hookform/resolvers/zod"
+// import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../../components/ui/form";
 import { Button } from "../../components/ui/button";
 
 
@@ -40,20 +39,20 @@ export function Reports() {
         path: ["confirmPassword"]
     });
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            name: "",
-            email: "",
-            mobile: "",
-            newPassword: "",
-            confirmPassword: ""
-        },
-    });
+    // const form = useForm<z.infer<typeof formSchema>>({
+    //     resolver: zodResolver(formSchema),
+    //     defaultValues: {
+    //         name: "",
+    //         email: "",
+    //         mobile: "",
+    //         newPassword: "",
+    //         confirmPassword: ""
+    //     },
+    // });
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
-    }
+    // function onSubmit(values: z.infer<typeof formSchema>) {
+    //     console.log(values);
+    // }
 
 
 

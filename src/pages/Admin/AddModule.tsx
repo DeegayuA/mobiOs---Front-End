@@ -6,11 +6,9 @@ import { Separator } from "../../components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "../../components/ui/sidebar";
 import { AppSidebar } from "../../components/app-sidebar";
 import { Input } from "../../components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import {
-    Form, FormControl, FormField, FormItem, FormMessage
+    Form, FormControl, FormField, FormItem
 } from "../../components/ui/form";
 import { Button } from "../../components/ui/button";
 import { IoMdAdd } from "react-icons/io";
@@ -29,9 +27,9 @@ export function AddModule() {
         },
     });
 
-    function onSubmit(values) {
-        console.log(values);
-    }
+    // function onSubmit(values) {
+    //     console.log(values);
+    // }
 
     return (
         <SidebarProvider>
@@ -59,7 +57,7 @@ export function AddModule() {
                         {/* <h2 className="text-xl font-semibold uppercase text-center">ADD COURSE</h2> */}
 
                         <Form {...form}>
-                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 p-[3%]">
+                            <form  className="space-y-6 p-[3%]">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="space-y-4">
                                         <FormField control={form.control} name="courseName" render={({ field }) => (

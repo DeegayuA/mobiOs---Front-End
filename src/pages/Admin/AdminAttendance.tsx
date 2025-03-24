@@ -35,7 +35,7 @@ export default function Course() {
     const [searchTerm, setSearchTerm] = useState<string>("");
 
     useEffect(() => {
-        let filtered = courseData.filter((item) =>
+        const filtered = courseData.filter((item) =>
             (selectedCourse === "all" || item.course === selectedCourse) &&
             (selectedModule === "all" || item.module === selectedModule) &&
             (item.course.toLowerCase().includes(searchTerm.toLowerCase()) ||

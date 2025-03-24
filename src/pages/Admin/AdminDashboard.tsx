@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Outlet } from "react-router-dom";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator } from "../../components/ui/breadcrumb";
 import { Separator } from "../../components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "../../components/ui/sidebar";
@@ -39,7 +38,7 @@ export default function AdminDashboard() {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   useEffect(() => {
-    let filtered = courseData.filter((item) =>
+    const filtered = courseData.filter((item) =>
       (selectedCourse === "all" || item.course === selectedCourse) &&
       (selectedModule === "all" || item.module === selectedModule) &&
       (item.course.toLowerCase().includes(searchTerm.toLowerCase()) ||

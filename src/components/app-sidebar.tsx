@@ -2,17 +2,12 @@ import * as React from "react"
 import {
   BookOpen,
   Bot,
-  Command,
-  Frame,
   LayoutDashboard,
   LifeBuoy,
-  Map,
   PersonStanding,
   PieChart,
   School,
   Send,
-  Settings2,
-  SquareTerminal,
 } from "lucide-react"
 
 import {
@@ -25,7 +20,6 @@ import {
   SidebarMenuItem,
 } from "../components/ui/sidebar"
 import { NavMain } from "./nav-main"
-import { NavProjects } from "./nav-projects"
 import { NavSecondary } from "./nav-secondary"
 import { NavUser } from "./nav-user"
 export const UserContext = React.createContext(null);

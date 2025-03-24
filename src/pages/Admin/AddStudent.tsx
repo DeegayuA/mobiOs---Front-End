@@ -6,50 +6,42 @@ import { Separator } from "../../components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "../../components/ui/sidebar";
 import { AppSidebar } from "../../components/app-sidebar";
 import { Input } from "../../components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import {
-    Form, FormControl, FormField, FormItem, FormMessage
+    Form, FormControl, FormField, FormItem
 } from "../../components/ui/form";
 import { Button } from "../../components/ui/button";
 import { IoMdAdd } from "react-icons/io";
-import { Textarea } from "../../components/ui/textarea";
 
 export function AddStudent() {
     const form = useForm({
+        
+    
         defaultValues: {
-            courseName: "",
-            courseId: "",
-            courseDescription: "",
-            startDate: "",
-            endDate: "",
-            moduleName: "",
-            moduleCode: "",
-            date: "",
-            fromTime: "",
-            toTime: "",
-            classSchedule: "",
-        },
+            studentName: "",
+            studentId: "",
+            mobile: "",
+            email:""
+        }
     });
 
-    function onSubmit(values) {
-        console.log(values);
-    }
+    // function onSubmit(values) {
+    //     console.log(values);
+    // }
 
     const [courseName, setCourseName] = useState("");
     const [courses, setCourses] = useState([]);
 
-    const handleAddCourse = () => {
-        if (courseName.trim() !== "") {
-            setCourses([...courses, courseName]);
-            setCourseName(""); // Clear input after adding
-        }
-    };
+    // const handleAddCourse = () => {
+    //     if (courseName.trim() !== "") {
+    //         setCourses([...courses, courseName]);
+    //         setCourseName(""); // Clear input after adding
+    //     }
+    // };
 
-    const handleRemoveCourse = (index) => {
-        setCourses(courses.filter((_, i) => i !== index));
-    };
+    // const handleRemoveCourse = (index) => {
+    //     setCourses(courses.filter((_, i) => i !== index));
+    // };
 
     return (
         <SidebarProvider>
@@ -77,10 +69,10 @@ export function AddStudent() {
                         {/* <h2 className="text-xl font-semibold uppercase text-center">ADD COURSE</h2> */}
 
                         <Form {...form}>
-                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 p-[3%]">
+                            <form  className="space-y-6 p-[3%]">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="space-y-4">
-                                        <FormField control={form.control} name="studentName" render={({ field }) => (
+                                        <FormField control={form.control} name = "studentName" render={({ field }) => (
                                             <FormItem>
                                                 <FormControl>
                                                     <Input placeholder="Student Name" {...field} className="border rounded-md p-2 w-full" />
@@ -88,7 +80,7 @@ export function AddStudent() {
                                             </FormItem>
                                         )} />
 
-                                        <FormField control={form.control} name="studentId" render={({ field }) => (
+                                        <FormField  control={form.control} name = "studentId" render={({ field }) => (
                                             <FormItem>
                                                 <FormControl>
                                                     <Input placeholder="Student ID" {...field} className="border rounded-md p-2 w-full" />
@@ -99,7 +91,7 @@ export function AddStudent() {
 
 
                                         <div className="flex space-x-[5%] w-full">
-                                            <FormField control={form.control} name="mobileNumber" render={({ field }) => (
+                                            <FormField  control={form.control} name="mobile" render={({ field }) => (
                                                 <FormItem className="w-[50%]">
                                                     <FormControl>
                                                         <Input placeholder="Mobile Number" {...field} className="border rounded-md p-2  " />
@@ -138,7 +130,7 @@ export function AddStudent() {
                                             />
                                             <IoMdAdd
                                                 className="text-4xl ml-4 cursor-pointer lg:ml-[15%]"
-                                                onClick={handleAddCourse}
+                                                // onClick={handleAddCourse}
                                             />
                                         </div>
 
@@ -152,7 +144,7 @@ export function AddStudent() {
                                                         <span>{course}</span>
                                                         <button
                                                             className="text-red-500 hover:text-red-700 text-sm"
-                                                            onClick={() => handleRemoveCourse(index)}
+                                                            // onClick={() => handleRemoveCourse(index)}
                                                         >
                                                             Remove
                                                         </button>
