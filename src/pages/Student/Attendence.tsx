@@ -68,12 +68,6 @@ const Attendance = () => {
     loadModules();
   }, []);
 
-  const filteredRecords =
-    selectedModule !== "ALL_MODULES"
-      ? attendanceRecords.filter(
-          (record) => record?.schedule?.subject?.id === selectedModule
-        )
-      : attendanceRecords;
 
   return (
     <div className="flex flex-col items-center justify-between min-h-screen bg-gray-100 p-4">
@@ -118,8 +112,8 @@ const Attendance = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredRecords.length > 0 ? (
-                    filteredRecords.map((record, index) => (
+                  {attendanceRecords.length > 0 ? (
+                    attendanceRecords.map((record, index) => (
                       <TableRow key={index} className="border-b">
                         <TableCell className="p-1 w-1/4">
                           {record?.schedule?.class_date}
