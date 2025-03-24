@@ -9,160 +9,44 @@ import {
   TableRow,
 } from "../../components/ui/table";
 import { request } from "../../lib/apiManager";
+import moment from "moment";
 
 const Attendance = () => {
-  const [selectedModule, setSelectedModule] = useState("");
+  const [selectedModule, setSelectedModule] = useState("ALL_MODULES");
+  const profile = JSON.parse(localStorage.getItem("profile") || "{}");
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+  const [attendanceRecords, setAttendanceRecords] = useState([]);
+  console.log(attendanceRecords);
 
-  const attendanceRecords = [
-    { date: "2024-03-18", time: "10:00", module: "AI & ML", attended: true },
-    { date: "2024-03-17", time: "14:00", module: "Big Data", attended: false },
-    {
-      date: "2024-03-16",
-      time: "09:30",
-      module: "Network Security",
-      attended: true,
-    },
-    { date: "2024-03-18", time: "10:00", module: "AI & ML", attended: true },
-    { date: "2024-03-16", time: "14:30", module: "AI & ML", attended: false },
-    { date: "2024-03-14", time: "09:45", module: "AI & ML", attended: true },
+  console.log(selectedModule);
 
-    { date: "2024-03-17", time: "14:00", module: "Big Data", attended: false },
-    { date: "2024-03-15", time: "16:30", module: "Big Data", attended: true },
-    { date: "2024-03-13", time: "11:00", module: "Big Data", attended: false },
+  const loadAttendance = async () => {
+    try {
+      const response = await request({
+        method: "post",
+        path: "/attendance/filter",
+        requestBody: {
+          studentId: profile.id,
+          subjectId: selectedModule === "ALL_MODULES" ? null : selectedModule,
+          courseId: null,
+          value: "",
+          page: page,
+          limit: limit,
+        },
+      });
+      console.log(response);
+      setTotalPages(response.data.totalPages);
+      setAttendanceRecords(response.data.data);
+    } catch (error) {
+      console.error("Error fetching modules:", error);
+    }
+  };
 
-    {
-      date: "2024-03-16",
-      time: "09:30",
-      module: "Network Security",
-      attended: true,
-    },
-    {
-      date: "2024-03-14",
-      time: "15:15",
-      module: "Network Security",
-      attended: false,
-    },
-    {
-      date: "2024-03-12",
-      time: "08:45",
-      module: "Network Security",
-      attended: true,
-    },
-
-    {
-      date: "2024-03-15",
-      time: "11:00",
-      module: "Cloud Computing",
-      attended: true,
-    },
-    {
-      date: "2024-03-13",
-      time: "14:45",
-      module: "Cloud Computing",
-      attended: false,
-    },
-    {
-      date: "2024-03-11",
-      time: "10:15",
-      module: "Cloud Computing",
-      attended: true,
-    },
-
-    {
-      date: "2024-03-14",
-      time: "15:30",
-      module: "Data Science",
-      attended: false,
-    },
-    {
-      date: "2024-03-12",
-      time: "09:00",
-      module: "Data Science",
-      attended: true,
-    },
-    {
-      date: "2024-03-10",
-      time: "13:30",
-      module: "Data Science",
-      attended: false,
-    },
-
-    {
-      date: "2024-03-13",
-      time: "13:00",
-      module: "Software Engineering",
-      attended: true,
-    },
-    {
-      date: "2024-03-11",
-      time: "16:45",
-      module: "Software Engineering",
-      attended: false,
-    },
-    {
-      date: "2024-03-09",
-      time: "10:30",
-      module: "Software Engineering",
-      attended: true,
-    },
-
-    {
-      date: "2024-03-12",
-      time: "10:15",
-      module: "Cybersecurity",
-      attended: false,
-    },
-    {
-      date: "2024-03-10",
-      time: "14:15",
-      module: "Cybersecurity",
-      attended: true,
-    },
-    {
-      date: "2024-03-08",
-      time: "11:45",
-      module: "Cybersecurity",
-      attended: false,
-    },
-
-    {
-      date: "2024-03-11",
-      time: "16:45",
-      module: "Blockchain Technology",
-      attended: true,
-    },
-    {
-      date: "2024-03-09",
-      time: "12:00",
-      module: "Blockchain Technology",
-      attended: false,
-    },
-    {
-      date: "2024-03-07",
-      time: "15:30",
-      module: "Blockchain Technology",
-      attended: true,
-    },
-
-    {
-      date: "2024-03-10",
-      time: "09:00",
-      module: "Machine Learning",
-      attended: true,
-    },
-    {
-      date: "2024-03-08",
-      time: "13:45",
-      module: "Machine Learning",
-      attended: false,
-    },
-    {
-      date: "2024-03-06",
-      time: "10:30",
-      module: "Machine Learning",
-      attended: true,
-    },
-  ];
+  useEffect(() => {
+    loadAttendance();
+  }, [selectedModule, page, limit]);
 
   const [moduleOptions, setModuleOptions] = useState<string[]>([]);
 
@@ -184,9 +68,12 @@ const Attendance = () => {
     loadModules();
   }, []);
 
-  const filteredRecords = selectedModule
-    ? attendanceRecords.filter((record) => record.module === selectedModule)
-    : attendanceRecords;
+  const filteredRecords =
+    selectedModule !== "ALL_MODULES"
+      ? attendanceRecords.filter(
+          (record) => record?.schedule?.subject?.id === selectedModule
+        )
+      : attendanceRecords;
 
   return (
     <div className="flex flex-col items-center justify-between min-h-screen bg-gray-100 p-4">
@@ -235,16 +122,16 @@ const Attendance = () => {
                     filteredRecords.map((record, index) => (
                       <TableRow key={index} className="border-b">
                         <TableCell className="p-1 w-1/4">
-                          {record.date}
+                          {record?.schedule?.class_date}
                         </TableCell>
                         <TableCell className="p-1 w-1/4">
-                          {record.time}
+                          {moment(record.schedule?.start_time, "HH:mm").format("hh:mm A") + " - " + moment(record.schedule?.end_time, "HH:mm").format("hh:mm A")}
                         </TableCell>
                         <TableCell className="p-1 w-1/4">
-                          {record.module}
+                          {record?.schedule?.subject?.subject_name}
                         </TableCell>
                         <TableCell className="p-2 w-1/4">
-                          {record.attended ? (
+                          {record.status === "present" ? (
                             <span className="text-green-600 font-semibold">
                               Present
                             </span>
@@ -268,6 +155,51 @@ const Attendance = () => {
                   )}
                 </TableBody>
               </Table>
+            </div>
+            <div className="flex justify-between items-center mt-4">
+              <div className="flex items-center  pl-2">
+                <span className="text-sm text-gray-600">Items per page:</span>
+                <select
+                  value={limit}
+                  // onChange={(e) => handleLimitChange(Number(e.target.value))}
+                  className="border rounded px-2 py-1 text-sm"
+                >
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={20}>20</option>
+                  <option value={50}>50</option>
+                </select>
+              </div>
+
+              <div className="flex items-center space-x-4 py-2">
+                <button
+                  onClick={() => setPage((page) => page - 1)}
+                  disabled={page === 1}
+                  className={`px-4 py-2 rounded ${
+                    page === 1
+                      ? "bg-gray-300 cursor-not-allowed"
+                      : "bg-blue-500 text-white hover:bg-blue-600"
+                  }`}
+                >
+                  Previous
+                </button>
+
+                <span className="text-gray-700">
+                  Page {totalPages === 0 ? 0 : page} of {totalPages}
+                </span>
+
+                <button
+                  onClick={() => setPage((page) => page + 1)}
+                  disabled={totalPages === page}
+                  className={` mr-2 px-4 py-2 rounded ${
+                    totalPages === page
+                      ? "bg-gray-300 cursor-not-allowed"
+                      : "bg-blue-500 text-white hover:bg-blue-600"
+                  }`}
+                >
+                  Next
+                </button>
+              </div>
             </div>
           </div>
         </div>

@@ -12,13 +12,13 @@ const ModuleSelector: React.FC<ModuleSelectorProps> = ({ modules, selectedModule
       <label className="block text-blue-500 font-semibold mb-2">Select Module:</label>
       <select
         className="w-[75%] p-2 border rounded-lg"
-        value={selectedModule}
+        value={selectedModule.id}
         onChange={(e) => onModuleChange(e.target.value)}
       >
-        <option value="">All Modules</option>
+        <option value="ALL_MODULES">All Modules</option>
         {modules.map((module, index) => (
-          <option key={index} value={module}>
-            {module}
+          <option key={index} value={module?.id || ""}>
+            {module?.subject_name}
           </option>
         ))}
       </select>
