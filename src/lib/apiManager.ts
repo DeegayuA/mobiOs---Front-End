@@ -3,7 +3,7 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequ
 
 
 interface UserData {
-    token: string;
+    access_token: string;
     refreshToken: string;
     // Add other user data properties if they exist
 }
@@ -67,7 +67,7 @@ api.interceptors.request.use(
         const profileDataString = localStorage.getItem("profile");
         if (profileDataString) {
             const profileData: UserData = JSON.parse(profileDataString);
-            const token = profileData?.token;
+            const token = profileData?.access_token;
             if (token && config.headers) {
                 config.headers["Authorization"] = `Bearer ${token}`;
             }
@@ -143,8 +143,8 @@ export const request = async <T = any>({
 
         if (axiosError.response) {
             console.log("Error data:", axiosError.response.data);
-            const responseData = axiosError.response.data as { error?: string; message?: string };
-            errorMessage = responseData.error || responseData.message || errorMessage;
+            const responseData = axiosError.response.data as { status?: number; message?: string };
+            errorMessage =  responseData.message || "An error occurred";
         } else if (axiosError.request) {
             console.log("Error request:", axiosError.request);
         } else {

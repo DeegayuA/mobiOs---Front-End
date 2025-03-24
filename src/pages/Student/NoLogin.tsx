@@ -3,6 +3,8 @@ import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
 import { Input } from "../../components/ui/input";
 import { request } from "../../lib/apiManager";
+import { saveProfileToLocalStorage } from "../../lib/utils";
+import { useNavigate } from "react-router-dom";
 
 const UI_VIEWS = {
   MOBILE_NO: "mobile_no",
@@ -12,6 +14,7 @@ const NoLogin = () => {
   const [mobileNo, setMobileNo] = useState("");
   const [otp, setOtp] = useState("");
   const [visibleUI, setVisibleUI] = useState(UI_VIEWS.MOBILE_NO);
+  const navigate = useNavigate();
 
   const handleSendOtp = async () => {
     try {
@@ -19,14 +22,14 @@ const NoLogin = () => {
         method: "post",
         path: "/students/resend/otp",
         requestBody: {
-          mobileNo,
+          phone_number: mobileNo,
         },
       });
       console.log(response);
       setVisibleUI(UI_VIEWS.OTP_INPUT);
     } catch (error) {
       if (error instanceof Error) {
-        alert("An error occured. Please check mobile number and try again");
+        alert(error.message);
       }
     }
   };
@@ -37,11 +40,18 @@ const NoLogin = () => {
         method: "post",
         path: "/students/validate/otp",
         requestBody: {
-          mobileNo,
-          otp,
+          phone_number: mobileNo,
+          otp_code: otp,
         },
       });
       console.log(response);
+      const data = response.data;
+      const profileData = {
+        access_token: data.access_token,
+        ...response.data.user,
+      }
+      saveProfileToLocalStorage(profileData);
+      navigate("/student/profile");
     } catch (error) {
       if (error instanceof Error) {
         alert("An error occured. Please check OTP and try again");
@@ -105,7 +115,12 @@ const NoLogin = () => {
                   />
                 </div>
 
-                <Button type="submit" variant="accent" className="w-full" onClick={handleVerifyOtp}>
+                <Button
+                  type="submit"
+                  variant="accent"
+                  className="w-full"
+                  onClick={handleVerifyOtp}
+                >
                   Verify OTP
                 </Button>
               </>

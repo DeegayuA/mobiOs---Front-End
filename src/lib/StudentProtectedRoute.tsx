@@ -8,7 +8,7 @@ interface StudentProtectedRouteProps {
 
 const StudentProtectedRoute: React.FC<StudentProtectedRouteProps> = ({ children }) => {
     const location = useLocation();
-    const auth = localStorage.getItem('student-profile');
+    const auth = localStorage.getItem('profile');
 
     if (!auth) {
         return <Navigate to="/student/auth" state={{ from: location }} replace />;

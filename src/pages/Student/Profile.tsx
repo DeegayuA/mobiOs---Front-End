@@ -4,19 +4,12 @@ import { Label } from "../../components/ui/label";
 import { useState } from "react";
 
 const Profile = () => {
+ 
+  const profile = JSON.parse(localStorage.getItem('profile') || '{}');
 
-  const studentData = {
-    name: "John Doe",
-    studentId: "STU123456",
-    courseName: "Computer Science",
-    courseId: "CS101",
-    mobileNo: "0740427745", 
-    email: "john.doe@example.com", 
-  };
+  const [mobileNo, setMobileNo] = useState(profile.phone_number);
+  const [email, setEmail] = useState(profile.email);
 
-
-  const [mobileNo, setMobileNo] = useState(studentData.mobileNo);
-  const [email, setEmail] = useState(studentData.email);
 
   return (
     <div className="flex flex-col items-center justify-between min-h-screen bg-gray-100 p-4">
@@ -37,13 +30,13 @@ const Profile = () => {
            
             <div className="space-y-1">
               <Label>Student Name</Label>
-              <div className="px-3 py-2 bg-gray-200 rounded-2xl">{studentData.name}</div>
+              <div className="px-3 py-2 bg-gray-200 rounded-2xl">{profile.first_name + " " + profile.last_name}</div>
             </div>
 
            
             <div className="space-y-1">
               <Label>Student ID</Label>
-              <div className="px-3 py-2 bg-gray-200 rounded-2xl">{studentData.studentId}</div>
+              <div className="px-3 py-2 bg-gray-200 rounded-2xl">{profile.id}</div>
             </div>
 
             
@@ -74,15 +67,15 @@ const Profile = () => {
 
             
             <div className="space-y-1">
-              <Label>Course Name</Label>
-              <div className="px-3 py-2 bg-gray-200 rounded-2xl">{studentData.courseName}</div>
+              <Label>Address</Label>
+              <div className="px-3 py-2 bg-gray-200 rounded-2xl">{profile.address}</div>
             </div>
 
             
-            <div className="space-y-1">
+            {/* <div className="space-y-1">
               <Label>Course ID</Label>
-              <div className="px-3 py-2 bg-gray-200 rounded-2xl">{studentData.courseId}</div>
-            </div>
+              <div className="px-3 py-2 bg-gray-200 rounded-2xl">{profile.courseId}</div>
+            </div> */}
           </CardContent>
         </Card>
       </div>
