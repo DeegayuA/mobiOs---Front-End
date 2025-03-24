@@ -78,7 +78,7 @@ const Attendance = () => {
 
       <div className="flex flex-col items-center justify-center flex-grow w-full">
         <h1 className="text-2xl font-bold text-gray-800 mb-4">
-          Hi Student! 🎓
+          Hi Student!
         </h1>
 
         <div className="w-full max-w-4xl p-1 bg-white rounded-2xl shadow-md">
