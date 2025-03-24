@@ -133,7 +133,7 @@ export function Reports() {
         <SidebarProvider>
             <AppSidebar />
             <SidebarInset>
-                <div className="border border-[var(--primary-border-color)] rounded-lg shadow-md xs:rounded-none">
+                <div className="border border-[var(--primary-border-color)]  rounded-lg shadow-md xs:rounded-none">
                     <header className="flex h-16 shrink-0 items-center gap-2 shadow-md px-4 border-[var(--primary-border-color)] border-b">
                         <SidebarTrigger className="-ml-1" />
                         <Separator orientation="vertical" className="mr-2 h-4 bg-[var(--primary-border-color)]" />
@@ -150,38 +150,47 @@ export function Reports() {
                         </Breadcrumb>
                         <span className="ml-auto font-medium text-gray-600">Hi! Admin</span>
                     </header>
+
                     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
                         <div className="flex flex-col gap-6 p-6">
                             <h2 className="text-xl font-semibold uppercase">REPORTS</h2>
                         </div>
                         {/* code goes hrer */}
-                        <div className="relative w-48">
+                        <div className="flex space-x-[8%] w-full ml-[2%]">
 
-                            <button
-                                onClick={toggleDropdown}
-                                className="flex items-center w-[120%] justify-between  px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
-                            >
-                                <span>{selectedCourse}</span>
-                                <ChevronDown className="w-4 h-4 ml-2" />
-                            </button>
+                            <div className="w-[20%]">
+                                <button
+                                    onClick={toggleDropdown}
+                                    className="flex items-center w-[120%] justify-between  px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
+                                >
+                                    <span>{selectedCourse}</span>
+                                    <ChevronDown className="w-4 h-4 ml-2" />
+                                </button>
 
-                            {isOpen && (
-                                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
-                                    {courses.map((course) => (
-                                        <div
-                                            key={course}
-                                            onClick={() => selectCourse(course)}
-                                            className={`px-4 py-2 text-sm cursor-pointer hover:bg-gray-100 ${selectedCourse === course ? 'bg-blue-100' : ''
-                                                }`}
-                                        >
-                                            <div className="flex items-center justify-between">
-                                                <span>{course}</span>
-                                                {selectedCourse === course && <Check className="w-4 h-4 text-blue-500" />}
+                                {isOpen && (
+                                    <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+                                        {courses.map((course) => (
+                                            <div
+                                                key={course}
+                                                onClick={() => selectCourse(course)}
+                                                className={`px-4 py-2 text-sm cursor-pointer hover:bg-gray-100 ${selectedCourse === course ? 'bg-blue-100' : ''
+                                                    }`}
+                                            >
+                                                <div className="flex items-center justify-between">
+                                                    <span>{course}</span>
+                                                    {selectedCourse === course && <Check className="w-4 h-4 text-blue-500" />}
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
+                                        ))}
+
+                                    </div>
+                                )}
+                            </div>
+                            <div className="w-[10%]">
+                                <Button type="submit" variant="accent"   >
+                                    Download
+                                </Button>
+                            </div>
                         </div>
                         {/* here */}
 
@@ -225,27 +234,6 @@ export function Reports() {
                         </div>
                         {/* </div> */}
                         {/* bar chart end */}
-
-
-
-
-
-
-                        <div className="flex space-x-[5%]">
-                            <Input
-                                disabled
-                                placeholder="Reports"
-                                className="border rounded-md p-2 w-1/2 border-[var(--primary-border-color)]"
-                            />
-
-
-                            <Button
-                                type="submit"
-                                variant="accent"
-                            >
-                                Download
-                            </Button>
-                        </div>
 
 
 

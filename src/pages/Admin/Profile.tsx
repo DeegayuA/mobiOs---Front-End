@@ -61,24 +61,24 @@ export function Profile() {
         <SidebarProvider>
             <AppSidebar />
             <SidebarInset>
-                <div className="border border-[var(--primary-border-color)] rounded-lg shadow-md xs:rounded-none">
+                <div className="border border-[var(--primary-border-color)] rounded-lg shadow-md xs:rounded-non ">
                     <header className="flex h-16 shrink-0 items-center gap-2 shadow-md px-4 border-[var(--primary-border-color)] border-b">
-                                <SidebarTrigger className="-ml-1" />
-                                <Separator orientation="vertical" className="mr-2 h-4 bg-[var(--primary-border-color)]" />
-                                <Breadcrumb>
-                                  <BreadcrumbList>
-                                    <BreadcrumbItem className="hidden md:block">
-                                      <BreadcrumbLink href="#">Programs</BreadcrumbLink>
-                                    </BreadcrumbItem>
-                                    <BreadcrumbSeparator className="hidden md:block" />
-                                    <BreadcrumbItem>
-                                      <BreadcrumbPage>Course</BreadcrumbPage>
-                                    </BreadcrumbItem>
-                                  </BreadcrumbList>
-                                </Breadcrumb>
-                                <span className="ml-auto font-medium text-gray-600">Hi! Admin</span>
-                              </header>
-                    <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+                        <SidebarTrigger className="-ml-1" />
+                        <Separator orientation="vertical" className="mr-2 h-4 bg-[var(--primary-border-color)]" />
+                        <Breadcrumb>
+                            <BreadcrumbList>
+                                <BreadcrumbItem className="hidden md:block">
+                                    <BreadcrumbLink href="#">Programs</BreadcrumbLink>
+                                </BreadcrumbItem>
+                                <BreadcrumbSeparator className="hidden md:block" />
+                                <BreadcrumbItem>
+                                    <BreadcrumbPage>Course</BreadcrumbPage>
+                                </BreadcrumbItem>
+                            </BreadcrumbList>
+                        </Breadcrumb>
+                        <span className="ml-auto font-medium text-gray-600">Hi! Admin</span>
+                    </header>
+                    <div className="flex flex-1 flex-col gap-4 p-4 pt-0 ml-[2%]">
                         <div className="flex flex-col gap-6 p-6">
                             <h2 className="text-xl font-semibold uppercase">PROFILE</h2>
                         </div>
@@ -181,10 +181,7 @@ export function Profile() {
                                 </div>
 
                                 <div>
-                                    <Button
-                                        type="submit"
-                                        variant="accent"
-                                    >
+                                    <Button type="submit" className="bg-black text-white border border-black rounded-md px-6 py-2 hover:bg-gray-800 w-full md:w-auto">
                                         Update
                                     </Button>
                                 </div>

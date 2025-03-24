@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
-    Form, FormControl, FormField, FormItem, FormMessage
+    Form, FormControl, FormDescription, FormField, FormItem, FormMessage
 } from "../../components/ui/form";
 import { Button } from "../../components/ui/button";
 import { IoMdAdd } from "react-icons/io";
@@ -114,14 +114,20 @@ export function AddSchedule() {
                                                     <FormControl>
                                                         <Input type="date" {...field} className="border rounded-md p-2 w-[70%]" />
                                                     </FormControl>
+                                                    <FormDescription>
+                                                        Start Date
+                                                    </FormDescription>
                                                 </FormItem>
                                             )} />
 
                                             <FormField control={form.control} name="endDate" render={({ field }) => (
-                                                <FormItem>
+                                                <FormItem className="">
                                                     <FormControl>
                                                         <Input type="date" {...field} className="border rounded-md p-2 w-[70%] lg:ml-[30%]" />
                                                     </FormControl>
+                                                    <FormDescription className="lg:ml-[30%]">
+                                                        End Date
+                                                    </FormDescription>
                                                 </FormItem>
                                             )} />
                                         </div>
@@ -151,6 +157,15 @@ export function AddSchedule() {
                                             <IoMdAdd className="text-5xl w-[30%]  lg:ml-[3%] cursor-pointer " />
                                         </div>
 
+                                        <div className="w-[49%]">
+                                            <Textarea placeholder="Module Details" />
+
+                                        </div>
+
+                                        <Button type="submit" className="bg-black text-white border border-black rounded-md px-6 py-2 hover:bg-gray-800 w-full md:w-auto">
+                                            Submit
+                                        </Button>
+
 
                                     </div>
 
@@ -169,21 +184,9 @@ export function AddSchedule() {
                                         </div>
                                     </div>
 
-
-
-
                                 </div>
 
-                                <div className="w-[49%]">
-                                    <Textarea placeholder="Module Details" />
 
-                                </div>
-
-                                <Button type="submit" className="bg-black text-white border border-black rounded-md px-6 py-2 hover:bg-gray-800 w-full md:w-auto">
-                                    Submit
-                                </Button>
-
-                                
                             </form>
                         </Form>
 

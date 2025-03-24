@@ -108,7 +108,7 @@ export function AddCourse() {
                                             )} />
                                         </div>
 
-                                        <Button type="submit" className="bg-black text-white border border-black rounded-md px-6 py-2 hover:bg-gray-800 w-full md:w-auto">
+                                        <Button type="submit" className="bg-black text-white border border-black rounded-md px-6 py-2 hover:bg-gray-800 w-full md:w-[20%]">
                                             Submit
                                         </Button>
                                     </div>
