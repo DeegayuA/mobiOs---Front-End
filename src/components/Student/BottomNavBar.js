@@ -1,0 +1,6 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { NavLink } from "react-router-dom";
+import { Home, QrCode, User } from "lucide-react";
+export default function BottomNav() {
+    return (_jsxs("div", { className: "fixed bottom-0 w-full bg-white border-t shadow-md p-2 flex justify-around", children: [_jsxs(NavLink, { to: "/student/attendence", className: ({ isActive }) => `flex flex-col items-center transition-colors duration-300 ${isActive ? "text-blue-800" : "text-blue-500 hover:text-blue-600"}`, children: [_jsx(Home, { className: "h-5 w-5" }), _jsx("span", { className: "text-xs ", children: "Attendance" })] }), _jsxs(NavLink, { to: "/student/qr-scanner", className: ({ isActive }) => `flex flex-col items-center transition-colors duration-300 ${isActive ? "text-blue-800" : "text-blue-500 hover:text-blue-600"}`, children: [_jsx(QrCode, { className: "h-5 w-5" }), _jsx("span", { className: "text-xs", children: "QR" })] }), _jsxs(NavLink, { to: "/student/profile", className: ({ isActive }) => `flex flex-col items-center transition-colors duration-300 ${isActive ? "text-blue-800" : "text-blue-500 hover:text-blue-600"}`, children: [_jsx(User, { className: "h-5 w-5" }), _jsx("span", { className: "text-xs", children: "Profile" })] })] }));
+}

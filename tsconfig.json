@@ -5,9 +5,22 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
+    "composite": true,
     "baseUrl": ".",
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",  
+    "moduleResolution": "bundler",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "target": "ES6",
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "lib": ["dom", "esnext"],
     "paths": {
       "@/*": ["./src/*"]
     }
-  }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.js", "src/**/*.jsx"]
 }

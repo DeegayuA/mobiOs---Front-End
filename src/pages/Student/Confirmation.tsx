@@ -31,7 +31,7 @@ export default function Confirmation() {
                 type="password"
                 placeholder="Enter new password"
                 value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewPassword(e.target.value)}
                 className="h-12 text-md border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500"
                 required
               />

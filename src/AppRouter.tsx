@@ -8,6 +8,7 @@ import Attendence from "./pages/Student/Attendence";
 import StudentProfile from "./pages/Student/Profile";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
+import AdminLogin from "./pages/Admin/Login";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AdminAttendance from "./pages/Admin/AdminAttendance";
 import Course from "./pages/Admin/Course";
@@ -19,8 +20,9 @@ import { AddModule } from "./pages/Admin/AddModule";
 import { AddSchedule } from "./pages/Admin/AddSchedule";
 import { Reports } from "./pages/Admin/Reports";
 import { AddStudent } from "./pages/Admin/AddStudent";
-import AdminLogin from "./pages/Admin/Login";
+// import AdminLogin from "./pages/Admin/Login";
 // import Profile from "./pages/Admin/Profile";
+import  { StudentLogin } from "./pages/Student/Login";
 
 export default function AppRouter() {
   return (
@@ -29,7 +31,10 @@ export default function AppRouter() {
 
 
         {/* Admin Routes */}
-        <Route path="/admin" element={<AdminLogin />}>
+
+        <Route path="/login" element={<StudentLogin/>}></Route>
+        <Route path="/admin" element={<AdminDashboard />}>
+
           <Route index element={<Navigate to="/admin/dashboard" />} />
         </Route>
         <Route path="/admin/dashboard" element={<AdminDashboard />} />

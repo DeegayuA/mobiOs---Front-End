@@ -49,7 +49,7 @@ export default function AdminCourse() {
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
 
   useEffect(() => {
-    let filtered = courseData.filter((item) =>
+    const filtered = courseData.filter((item) =>
       (selectedCourse === "all" || item.course === selectedCourse) &&
       (selectedModule === "all" || item.module === selectedModule) &&
       (item.course.toLowerCase().includes(searchTerm.toLowerCase()) ||
