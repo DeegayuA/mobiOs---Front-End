@@ -4,11 +4,14 @@ import { Input } from "../components/ui/input"
 import { Label } from "../components/ui/label"
 
 export function LoginForm({
+                            login,
+    setUsername,
+    setPassword,
   className,
   ...props
 }: React.ComponentProps<"form">) {
   return (
-    <form className={cn("flex flex-col gap-6 justify-center items-center", className)} {...props}>
+    <form onSubmit={login}className={cn("flex flex-col gap-6 justify-center items-center", className)} {...props}>
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">Login to your account</h1>
         <p className="text-muted-foreground text-sm text-balance">
@@ -17,8 +20,8 @@ export function LoginForm({
       </div>
       <div className="grid gap-6">
         <div className="grid gap-3">
-          <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="username@e-attendance.com" required  className="max-w-[300px] min-w-[150px] w-100"/>
+          <Label htmlFor="email">Username</Label>
+          <Input onChange={(e) => setUsername(e.target.value)} id="email" type="text" placeholder="username" required  className="max-w-[300px] min-w-[150px] w-100"/>
         </div>
         <div className="grid gap-3">
           <div className="flex items-center">
@@ -30,7 +33,7 @@ export function LoginForm({
               Forgot your password?
             </a>
           </div>
-          <Input id="password" type="password" placeholder="********" required />
+          <Input onChange={(e) => setPassword(e.target.value)} id="password" type="password" placeholder="********" required />
         </div>
         <Button type="submit" variant='accent' className="w-full">
           Login

@@ -10,6 +10,8 @@ import { BreadcrumbList, BreadcrumbPage } from "../../components/ui/breadcrumb";
 import { Select, SelectTrigger, SelectContent, SelectItem } from "../../components/ui/select"; // Import Select components
 import { Input } from "../../components/ui/input"; // Import Input component
 import { motion } from "framer-motion";
+import {request} from "../../lib/apiManagerAdmin";
+import {saveAdminProfileToLocalStorage} from "../../lib/utils";
 
 const data = {
   "Artificial Intelligence": ["Deep Learning", "Neural Networks", "AI Ethics"],
@@ -32,17 +34,19 @@ const courseData = Array.from({ length: 30 }, (_, i) => ({
 }));
 
 export default function AdminDashboard() {
+
   const allModules = Object.values(data).flat();
   const [selectedCourse, setSelectedCourse] = useState<keyof typeof data | "all">("all");
   const [selectedModule, setSelectedModule] = useState<string>("all");
   const [modules, setModules] = useState<string[]>(selectedCourse === "all" ? [] : data[selectedCourse] || []);
   const [filteredData, setFilteredData] = useState(courseData);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [counts, setCounts] = useState(null);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const heightAdjustment = 210; 
-  const rowsPerPage = Math.floor((window.innerHeight - heightAdjustment) / 50); 
+  const heightAdjustment = 210;
+  const rowsPerPage = Math.floor((window.innerHeight - heightAdjustment) / 50);
 
   // Pagination logic
   const indexOfLastRow = currentPage * rowsPerPage;
@@ -50,6 +54,7 @@ export default function AdminDashboard() {
   const currentRows = filteredData.slice(indexOfFirstRow, indexOfLastRow);
 
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+
 
   useEffect(() => {
     if (selectedCourse === "all") {
@@ -69,6 +74,30 @@ export default function AdminDashboard() {
   useEffect(() => {
     setModules(selectedCourse === "all" ? allModules : data[selectedCourse] || []);
   }, [selectedCourse]);
+
+  useEffect(() => {
+    getCounts();
+  }, []);
+
+  const getCounts = async () => {
+    try {
+      const response = await request({
+        method: "post",
+        path: "/dashboard/counts",
+        requestBody: {
+        },
+      });
+      console.log(response);
+      const data = response.data;
+      console.log(data);
+      setCounts(data)
+
+    } catch (error) {
+      if (error instanceof Error) {
+        alert("An error occurred. Please username or password and try again");
+      }
+    }
+  };
 
   return (
     <SidebarProvider>
@@ -100,7 +129,7 @@ export default function AdminDashboard() {
                   <CardTitle>Number of Active Courses</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-4xl font-bold text-[var(--accent)]">{Object.keys(data).length}</p>
+                  <p className="text-4xl font-bold text-[var(--accent)]">{counts?.courseCount??0}</p>
                 </CardContent>
               </Card>
               <Card className="border border-[var(--primary-border-color)]">
@@ -108,7 +137,7 @@ export default function AdminDashboard() {
                   <CardTitle>Number of Active Modules</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-4xl font-bold text-[var(--accent)]">{Object.values(data).flat().length}</p>
+                  <p className="text-4xl font-bold text-[var(--accent)]">{counts?.subjectCount??0}</p>
                 </CardContent>
               </Card>
               <Card className="border border-[var(--primary-border-color)]">
@@ -116,7 +145,7 @@ export default function AdminDashboard() {
                   <CardTitle>Number of Active Students</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-4xl font-bold text-[var(--accent)]">{courseData.length}</p>
+                  <p className="text-4xl font-bold text-[var(--accent)]">{counts?.studentCount??0}</p>
                 </CardContent>
               </Card>
               <Card className="border border-[var(--primary-border-color)]">
@@ -124,7 +153,7 @@ export default function AdminDashboard() {
                   <CardTitle>Number of Active Instructors</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-4xl font-bold text-[var(--accent)]">5</p> {/* Example Static Value */}
+                  <p className="text-4xl font-bold text-[var(--accent)]">{counts?.teacherCount??0}</p> {/* Example Static Value */}
                 </CardContent>
               </Card>
               <Card className="border border-[var(--primary-border-color)]">
@@ -132,7 +161,7 @@ export default function AdminDashboard() {
                   <CardTitle>Total Classes Conducted</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-4xl font-bold text-[var(--accent)]">{courseData.length}</p>
+                  <p className="text-4xl font-bold text-[var(--accent)]">{counts?.classScheduleCount??0}</p>
                 </CardContent>
               </Card>
               <Card className="border border-[var(--primary-border-color)]">
@@ -140,7 +169,7 @@ export default function AdminDashboard() {
                   <CardTitle>Total Attendance Count</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-4xl font-bold text-[var(--accent)]">{courseData.reduce((sum, item) => sum + item.totalStudents, 0)}</p>
+                  <p className="text-4xl font-bold text-[var(--accent)]">{counts?.attendanceCount??0}</p>
                 </CardContent>
               </Card>
             </div>
@@ -191,7 +220,7 @@ export default function AdminDashboard() {
             </div>
 
             <motion.div
-              key={currentPage} 
+              key={currentPage}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -220,7 +249,7 @@ export default function AdminDashboard() {
                 </Table>
               </div>
             </motion.div>
-            
+
             <div className="flex align-center justify-center gap-4 items-center ">
               <button
                 onClick={() => setCurrentPage(currentPage > 1 ? currentPage - 1 : currentPage)}
