@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react"
 import { LoginForm } from "../../components/login-form"
 import { motion } from "framer-motion"
+import axios from "axios"
+import { API_PATHS } from "../../api/apiConfig"
+
 
 const imageData = [
   "/src/assets/login-bg1.jpg", 
@@ -13,6 +16,7 @@ export default function AdminLogin() {
 
   useEffect(() => {
     const interval = setInterval(() => {
+      
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imageData.length)
     }, 10000) 
 
