@@ -1,33 +1,37 @@
-
-import Login from "./pages/Student/Login";
-import StudentLayout from "./pages/Student/StudentLayout"; 
-import ResetPassword from "./pages/Student/ResetPassword";
-import Confirmation from "./pages/Student/Confirmation";
-import QRScanner from "./pages/Student/QRScanner";
+import {
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from "react-router-dom";
 import Attendence from "./pages/Student/Attendence";
+import Confirmation from "./pages/Student/Confirmation";
+import Login from "./pages/Student/Login";
 import StudentProfile from "./pages/Student/Profile";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import QRScanner from "./pages/Student/QRScanner";
+import ResetPassword from "./pages/Student/ResetPassword";
+import StudentLayout from "./pages/Student/StudentLayout";
 
-import AdminDashboard from "./pages/Admin/AdminDashboard";
-import AdminAttendance from "./pages/Admin/AdminAttendance";
-import Course from "./pages/Admin/Course";
-import Students from "./pages/Admin/Students";
-import ClassSchedule from "./pages/Admin/ClassSchedule";
-import { Profile } from "./pages/Admin/Profile";
+import StudentProtectedRoute from "./lib/StudentProtectedRoute";
 import { AddCourse } from "./pages/Admin/AddCourse";
 import { AddModule } from "./pages/Admin/AddModule";
 import { AddSchedule } from "./pages/Admin/AddSchedule";
-import { Reports } from "./pages/Admin/Reports";
 import { AddStudent } from "./pages/Admin/AddStudent";
+import AdminAttendance from "./pages/Admin/AdminAttendance";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
+import ClassSchedule from "./pages/Admin/ClassSchedule";
+import Course from "./pages/Admin/Course";
 import AdminLogin from "./pages/Admin/Login";
+import { Profile } from "./pages/Admin/Profile";
+import { Reports } from "./pages/Admin/Reports";
+import Students from "./pages/Admin/Students";
+import NoLogin from "./pages/Student/NoLogin";
 // import Profile from "./pages/Admin/Profile";
 
 export default function AppRouter() {
   return (
     <Router>
       <Routes>
-
-
         {/* Admin Routes */}
         <Route path="/admin" element={<AdminLogin />}>
           <Route index element={<Navigate to="/admin/dashboard" />} />
@@ -48,12 +52,19 @@ export default function AppRouter() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/confirmation" element={<Confirmation />} />
         {/* Student Routes (Mobile View) */}
-        <Route path="/student" element={<StudentLayout />}>
-        <Route path="qr-scanner" element={<QRScanner />} />
-        <Route path="attendence" element={<Attendence />} />
-        <Route path="profile" element={<StudentProfile />} />
-  
+        <Route
+          path="/student"
+          element={
+            <StudentProtectedRoute>
+              <StudentLayout />
+            </StudentProtectedRoute>
+          }
+        >
+          <Route path="qr-scanner" element={<QRScanner />} />
+          <Route path="attendence" element={<Attendence />} />
+          <Route path="profile" element={<StudentProfile />} />
         </Route>
+        <Route path="/student/auth" element={<NoLogin />} />
       </Routes>
     </Router>
   );
