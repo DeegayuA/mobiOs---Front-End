@@ -92,8 +92,8 @@ const Attendance = () => {
             onModuleChange={setSelectedModule}
           />
 
-          <div className="w-full border rounded-xl overflow-hidden shadow-md bg-white">
-            <div className="overflow-auto">
+          <div className="w-full border rounded-xl overflow-hidden shadow-md bg-white pb-10">
+            <div className="overflow-auto ">
               <Table className="w-full">
                 <TableHeader>
                   <TableRow className="bg-gray-300">
@@ -155,7 +155,7 @@ const Attendance = () => {
                 <span className="text-sm text-gray-600">Items per page:</span>
                 <select
                   value={limit}
-                  // onChange={(e) => handleLimitChange(Number(e.target.value))}
+                  onChange={(e) => setLimit(Number(e.target.value))}
                   className="border rounded px-2 py-1 text-sm"
                 >
                   <option value={5}>5</option>
