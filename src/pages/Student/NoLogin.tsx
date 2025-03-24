@@ -2,24 +2,52 @@ import { useState } from "react";
 import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
 import { Input } from "../../components/ui/input";
+import { request } from "../../lib/apiManager";
 
 const UI_VIEWS = {
   MOBILE_NO: "mobile_no",
   OTP_INPUT: "otp_input",
 };
 const NoLogin = () => {
-  const studentData = {
-    name: "John Doe",
-    studentId: "STU123456",
-    courseName: "Computer Science",
-    courseId: "CS101",
-    mobileNo: "0740427745",
-    email: "john.doe@example.com",
-  };
-
-  const [mobileNo, setMobileNo] = useState(studentData.mobileNo);
+  const [mobileNo, setMobileNo] = useState("");
   const [otp, setOtp] = useState("");
   const [visibleUI, setVisibleUI] = useState(UI_VIEWS.MOBILE_NO);
+
+  const handleSendOtp = async () => {
+    try {
+      const response = await request({
+        method: "post",
+        path: "/students/resend/otp",
+        requestBody: {
+          mobileNo,
+        },
+      });
+      console.log(response);
+      setVisibleUI(UI_VIEWS.OTP_INPUT);
+    } catch (error) {
+      if (error instanceof Error) {
+        alert("An error occured. Please check mobile number and try again");
+      }
+    }
+  };
+
+  const handleVerifyOtp = async () => {
+    try {
+      const response = await request({
+        method: "post",
+        path: "/students/validate/otp",
+        requestBody: {
+          mobileNo,
+          otp,
+        },
+      });
+      console.log(response);
+    } catch (error) {
+      if (error instanceof Error) {
+        alert("An error occured. Please check OTP and try again");
+      }
+    }
+  };
 
   return (
     <div className="flex flex-col items-center justify-between min-h-screen bg-gray-100 p-4">
@@ -51,7 +79,12 @@ const NoLogin = () => {
                   />
                 </div>
 
-                <Button type="submit" variant="accent" className="w-full">
+                <Button
+                  type="submit"
+                  variant="accent"
+                  className="w-full"
+                  onClick={handleSendOtp}
+                >
                   Send OTP
                 </Button>
               </>
@@ -72,8 +105,8 @@ const NoLogin = () => {
                   />
                 </div>
 
-                <Button type="submit" variant="accent" className="w-full">
-                  Verify
+                <Button type="submit" variant="accent" className="w-full" onClick={handleVerifyOtp}>
+                  Verify OTP
                 </Button>
               </>
             )}
