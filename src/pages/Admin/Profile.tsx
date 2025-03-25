@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "../../components/ui/breadcrumb";
 import { Separator } from "../../components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "../../components/ui/sidebar";
 import { AppSidebar } from "../../components/app-sidebar";
 import { Input } from "../../components/ui/input";
-
 
 "use client"
 
@@ -14,14 +13,16 @@ import { z } from "zod"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../../components/ui/form";
 import { Button } from "../../components/ui/button";
 
-
-
-
 export function Profile() {
+    const adminDataString = localStorage.getItem("adminToken");
+    const adminData = JSON.parse(adminDataString);
 
     const formSchema = z.object({
-        name: z.string().min(2, {
-            message: "Name must be at least 2 characters.",
+        firstName: z.string().min(2, {
+            message: "First name must be at least 2 characters.",
+        }),
+        lastName: z.string().min(2, {
+            message: "Last name must be at least 2 characters.",
         }),
         email: z.string().email({
             message: "Please enter a valid email.",
@@ -43,9 +44,10 @@ export function Profile() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: "",
-            email: "",
-            mobile: "",
+            firstName: adminData.first_name,
+            lastName: adminData.last_name,
+            email: adminData.email,
+            mobile: adminData.phone_number,
             newPassword: "",
             confirmPassword: ""
         },
@@ -55,47 +57,63 @@ export function Profile() {
         console.log(values);
     }
 
-
-
     return (
         <SidebarProvider>
             <AppSidebar />
             <SidebarInset>
                 <div className="border border-[var(--primary-border-color)] rounded-lg shadow-md xs:rounded-none">
                     <header className="flex h-16 shrink-0 items-center gap-2 shadow-md px-4 border-[var(--primary-border-color)] border-b">
-                                <SidebarTrigger className="-ml-1" />
-                                <Separator orientation="vertical" className="mr-2 h-4 bg-[var(--primary-border-color)]" />
-                                <Breadcrumb>
-                                  <BreadcrumbList>
-                                    <BreadcrumbItem className="hidden md:block">
-                                      <BreadcrumbLink href="#">Programs</BreadcrumbLink>
-                                    </BreadcrumbItem>
-                                    <BreadcrumbSeparator className="hidden md:block" />
-                                    <BreadcrumbItem>
-                                      <BreadcrumbPage>Course</BreadcrumbPage>
-                                    </BreadcrumbItem>
-                                  </BreadcrumbList>
-                                </Breadcrumb>
-                                <span className="ml-auto font-medium text-gray-600">Hi! Admin</span>
-                              </header>
-                    <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-                        <div className="flex flex-col gap-6 p-6">
-                            <h2 className="text-xl font-semibold uppercase">PROFILE</h2>
+                        <SidebarTrigger className="-ml-1" />
+                        <Separator orientation="vertical" className="mr-2 h-4 bg-[var(--primary-border-color)]" />
+                        <Breadcrumb>
+                            <BreadcrumbList>
+                                <BreadcrumbItem className="hidden md:block">
+                                    <BreadcrumbLink href="#">Programs</BreadcrumbLink>
+                                </BreadcrumbItem>
+                                <BreadcrumbSeparator className="hidden md:block" />
+                                <BreadcrumbItem>
+                                    <BreadcrumbPage>Course</BreadcrumbPage>
+                                </BreadcrumbItem>
+                            </BreadcrumbList>
+                        </Breadcrumb>
+                        <span className="ml-auto font-medium text-gray-600">Hi! Admin</span>
+                    </header>
+                    <div className="flex flex-1 flex-col p-3 pt-3">
+                        <div className="flex flex-col gap-3 p-3">
+                            <h2 className="text-2xl font-semibold uppercase">PROFILE</h2>
                         </div>
-                        {/* code goes hrer */}
                         <Form {...form}>
-                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 p-3 mt-0">
                                 <div className="space-y-4">
                                     <FormField
                                         control={form.control}
-                                        name="name"
+                                        name="firstName"
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormControl>
                                                     <Input
-                                                        placeholder="Name"
+                                                        placeholder="First Name"
                                                         {...field}
-                                                        className="border border-[var(--primary-border-color)] rounded-md p-2 lg:w-1/2 "
+                                                        className="border border-[var(--primary-border-color)] rounded-md p-2 lg:w-1/2"
+                                                        disabled
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+
+                                    <FormField
+                                        control={form.control}
+                                        name="lastName"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormControl>
+                                                    <Input
+                                                        placeholder="Last Name"
+                                                        {...field}
+                                                        className="border border-[var(--primary-border-color)] rounded-md p-2 lg:w-1/2"
+                                                        disabled
                                                     />
                                                 </FormControl>
                                                 <FormMessage />
@@ -113,6 +131,7 @@ export function Profile() {
                                                         placeholder="Email"
                                                         {...field}
                                                         className="border border-[var(--primary-border-color)] rounded-md p-2 lg:w-1/2"
+                                                        disabled
                                                     />
                                                 </FormControl>
                                                 <FormMessage />
@@ -130,6 +149,7 @@ export function Profile() {
                                                         placeholder="Mobile Number"
                                                         {...field}
                                                         className="border border-[var(--primary-border-color)] rounded-md p-2 lg:w-1/2"
+                                                        disabled
                                                     />
                                                 </FormControl>
                                                 <FormMessage />
@@ -138,9 +158,8 @@ export function Profile() {
                                     />
                                 </div>
 
-                                <div className="mt-8">
+                                <div style={{ display: 'none' }}>
                                     <h3 className="text-lg font-medium mb-4">Change Password</h3>
-
                                     <div className="space-y-4">
                                         <FormField
                                             control={form.control}
@@ -153,6 +172,7 @@ export function Profile() {
                                                             placeholder="New Password"
                                                             {...field}
                                                             className="border border-[var(--primary-border-color)] rounded-md p-2 lg:w-1/2"
+                                                            disabled
                                                         />
                                                     </FormControl>
                                                     <FormMessage />
@@ -171,6 +191,7 @@ export function Profile() {
                                                             placeholder="Re Enter Password"
                                                             {...field}
                                                             className="border border-[var(--primary-border-color)] rounded-md p-2 lg:w-1/2"
+                                                            disabled
                                                         />
                                                     </FormControl>
                                                     <FormMessage />
@@ -184,18 +205,16 @@ export function Profile() {
                                     <Button
                                         type="submit"
                                         variant="accent"
+                                        disabled
                                     >
                                         Update
                                     </Button>
                                 </div>
                             </form>
                         </Form>
-
                     </div>
                 </div>
             </SidebarInset>
         </SidebarProvider>
     );
 }
-
-//
