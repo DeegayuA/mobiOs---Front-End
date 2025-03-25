@@ -1,7 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 
-
-
 interface UserData {
     access_token: string;
     refreshToken: string;
@@ -22,8 +20,6 @@ interface RequestOptions {
     hideUserId?: boolean;
     isFormData?: boolean;
 }
-
-
 
 const baseUrl: string = import.meta.env.VITE_BASE_URL as string;
 
