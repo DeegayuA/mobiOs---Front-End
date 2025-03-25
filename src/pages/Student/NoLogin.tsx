@@ -51,7 +51,8 @@ const NoLogin = () => {
         ...response.data.user,
       }
       saveProfileToLocalStorage(profileData);
-      navigate("/student/profile");
+      // navigate();
+      window.location.href = "/student/profile";
     } catch (error) {
       if (error instanceof Error) {
         alert("An error occured. Please check OTP and try again");

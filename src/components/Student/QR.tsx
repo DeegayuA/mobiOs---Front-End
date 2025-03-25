@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Html5QrcodeScanner } from "html5-qrcode";
 import QRImage from "../../assets/QR_image.png";
+import "./qr-scanner.css";
 
 interface QRScannerProps {
   onScan: (scannedText: string) => void;
@@ -33,7 +34,9 @@ const QRScannerComponent: React.FC<QRScannerProps> = ({ onScan }) => {
 
     return () => {
       if (scanner) {
-        scanner.clear().catch((err) => console.warn("Scanner Cleanup Error:", err));
+        scanner
+          .clear()
+          .catch((err) => console.warn("Scanner Cleanup Error:", err));
         setScanner(null);
       }
     };
@@ -43,10 +46,13 @@ const QRScannerComponent: React.FC<QRScannerProps> = ({ onScan }) => {
     <div className="flex flex-col items-center">
       {/* Conditional Scanner Display */}
       {isScanning ? (
-        <div id="qr-reader" className="border-2 border-gray-300 rounded-lg"></div>
+        <div
+          id="qr-reader"
+          className="border-2 border-gray-300 rounded-lg"
+        ></div>
       ) : (
         <img
-          src={QRImage}// 👈 Replace this with your QR code image
+          src={QRImage} // 👈 Replace this with your QR code image
           alt="Tap to Scan"
           className="w-32 h-32 cursor-pointer hover:opacity-80 transition"
           onClick={() => setIsScanning(true)}
