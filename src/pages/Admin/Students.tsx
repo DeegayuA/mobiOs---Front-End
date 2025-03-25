@@ -9,6 +9,7 @@ import { Table, TableHead, TableHeader, TableRow, TableBody, TableCell } from ".
 import { Input } from "../../components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "../../components/ui/select";
 import {request} from "../../lib/apiManagerAdmin";
+import StudentModal from "./Modal/StudentView";
 
 const studentsData = [
   { name: "John Doe", id: "S001", mobile: "1234567890", email: "john@example.com" },
@@ -54,6 +55,9 @@ export default function AdminStudents() {
   const [courseList, setCourseList] = useState<any | null>(null);
   const [selectedCourse, setSelectedCourse] = useState<any | null>(null);
   const [studentList, setStudentList] = useState<any | null>(null);
+  // const [showModal, setShowModal] = useState<any | null>(false);
+  const [studentData, setStudentData] = useState<any | null>(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
 
@@ -129,11 +133,20 @@ export default function AdminStudents() {
     }
   };
 
+  const loadStudent=(student:any)=>{
+    setStudentData(student);
+    setShowModal(true)
+  }
+
   return (
+      <>{showModal && (
+          <StudentModal student={studentData} onClose={() => setShowModal(false)} />
+      )}
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-      <div className="border border-[var(--primary-border-color)] rounded-lg shadow-md xs:rounded-none">
+
+        <div className="border border-[var(--primary-border-color)] rounded-lg shadow-md xs:rounded-none">
           <header className="flex h-16 shrink-0 items-center gap-2 shadow-md px-4 border-[var(--primary-border-color)] border-b">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4 bg-[var(--primary-border-color)]" />
@@ -225,7 +238,7 @@ export default function AdminStudents() {
                         <TableCell className="px-4 py-2">{student.email}</TableCell>
                         <TableCell className="space-y-1">
                           {/*<Button variant="link" size="sm" title="Reset student password">Reset Password</Button>*/}
-                          <Button variant="link" size="sm">View</Button>
+                          <Button onClick={() =>loadStudent(student)} variant="link" size="sm">View</Button>
                           <Button variant="link" size="sm">Edit</Button>
                         </TableCell>
                       </TableRow>
@@ -258,5 +271,6 @@ export default function AdminStudents() {
         </div>
       </SidebarInset>
     </SidebarProvider>
+      </>
   );
 }
