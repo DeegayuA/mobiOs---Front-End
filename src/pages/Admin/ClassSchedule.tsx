@@ -7,12 +7,17 @@ import { AppSidebar } from "../../components/app-sidebar";
 import { Button } from "../../components/ui/button";
 import { Table, TableHead, TableHeader, TableRow, TableBody, TableCell } from "../../components/ui/table";
 import {request} from "../../lib/apiManagerAdmin";
+import { AddClassScheduleModal } from "../../components/Modals/AddClassSchedule";
 
 export default function AdminClassSchedule() {
+
   const baseUrl: string = import.meta.env.VITE_BASE_URL as string;
 
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [classScheduleList, setClassScheduleList] = useState<any | null>(null);
+
+  console.log("sheduuu list : ",classScheduleList);
 
   const [activeFilter, setActiveFilter] = React.useState<string>("courses");
   const [currentPage, setCurrentPage] = React.useState(1);
@@ -24,69 +29,6 @@ export default function AdminClassSchedule() {
       courseId: "AI101",
       module: "Deep Learning",
       moduleId: "DL201",
-      qrCode: "https://placehold.co/150x150.png"
-    },
-    {
-      courseName: "Data Science",
-      courseId: "DS101",
-      module: "Machine Learning",
-      moduleId: "ML202",
-      qrCode: "https://placehold.co/150x150.png"
-    },
-    {
-      courseName: "Cyber Security",
-      courseId: "CS101",
-      module: "Cloud Security",
-      moduleId: "CS303",
-      qrCode: "https://placehold.co/150x150.png"
-    },
-    {
-      courseName: "Robotics",
-      courseId: "RO101",
-      module: "Embedded Systems",
-      moduleId: "RO201",
-      qrCode: "https://placehold.co/150x150.png"
-    },
-    {
-      courseName: "Quantum Computing",
-      courseId: "QC101",
-      module: "Quantum Algorithms",
-      moduleId: "QC201",
-      qrCode: "https://placehold.co/150x150.png"
-    },
-    {
-      courseName: "Biochemistry",
-      courseId: "BC101",
-      module: "Bioinformatics",
-      moduleId: "BC201",
-      qrCode: "https://placehold.co/150x150.png"
-    },
-    {
-      courseName: "Network Engineering",
-      courseId: "NE101",
-      module: "Network Security",
-      moduleId: "NE201",
-      qrCode: "https://placehold.co/150x150.png"
-    },
-    {
-      courseName: "Quantum Computing",
-      courseId: "QC101",
-      module: "Quantum Algorithms",
-      moduleId: "QC201",
-      qrCode: "https://placehold.co/150x150.png"
-    },
-    {
-      courseName: "Biochemistry",
-      courseId: "BC101",
-      module: "Bioinformatics",
-      moduleId: "BC201",
-      qrCode: "https://placehold.co/150x150.png"
-    },
-    {
-      courseName: "Network Engineering",
-      courseId: "NE101",
-      module: "Network Security",
-      moduleId: "NE201",
       qrCode: "https://placehold.co/150x150.png"
     }
   ];
@@ -118,27 +60,19 @@ export default function AdminClassSchedule() {
     // Trigger the download
     link.click();
   }
+
   const getClassSchedule = async () => {
     try {
       const response = await request({
-        method: "post",
-        path: "/class-schedule/filter",
-        requestBody: {
-          courseId: null,
-          subjectId: null,
-          value:"",
-          page:page,
-          limit:10
-        },
+        method: "get",  // Changed from post to get
+        path: "/class-schedule",  // Changed endpoint
       });
-      console.log(response);
       const data = response.data;
-      console.log(data);
-      setClassScheduleList(data.data)
-
+      console.log("hhhhh : ",data);
+      setClassScheduleList(data);
     } catch (error) {
       if (error instanceof Error) {
-        alert("An error occurred. Please username or password and try again");
+        alert("An error occurred. Please try again");
       }
     }
   };
@@ -167,7 +101,15 @@ export default function AdminClassSchedule() {
           </header>
 
           <div className="flex flex-1 flex-col p-6">
-            <h2 className="text-2xl font-semibold">PROGRAMS — CLASS SCHEDULE</h2>
+            <h2 className="text-2xl font-semibold flex justify-between items-center">
+              <span>PROGRAMS - CLASS SCHEDULE</span>
+              <Button 
+                onClick={() => setIsAddModalOpen(true)}
+                className="bg-[var(--accent)] hover:bg-[var(--accent-dark)] text-white"
+              >
+                Add Class Schedule
+              </Button>
+            </h2>
 
             <motion.div
               key={currentPage}
@@ -191,8 +133,8 @@ export default function AdminClassSchedule() {
                   <TableBody>
                     {classScheduleList?.map((row, index) => (
                       <TableRow key={index} className="hover:bg-gray-100">
-                        <TableCell>{row.batch.course.course_name}</TableCell>
-                        <TableCell>C0{row.batch.course.id}</TableCell>
+                        <TableCell>{row.subject.subject_name}</TableCell>
+                        <TableCell>C0{row.id}</TableCell>
                         <TableCell>{row.subject.subject_name}</TableCell>
                         <TableCell>S0{row.subject.id}</TableCell>
                         <TableCell><img src={baseUrl+'/class-schedule/qr/view/'+row.id+'/150/2'} alt="QR Code" className="w-16 h-16" /></TableCell>
@@ -229,7 +171,19 @@ export default function AdminClassSchedule() {
             </div>
           </div>
         </div>
+
+        {isAddModalOpen && (
+          <AddClassScheduleModal 
+            onClose={() => setIsAddModalOpen(false)}
+            onSuccess={() => {
+              setIsAddModalOpen(false);
+              getClassSchedule(); // Refresh the list
+            }}
+          />
+        )}
+
       </SidebarInset>
     </SidebarProvider>
-  );
+
+);
 }
