@@ -39,8 +39,8 @@ interface ModalProps {
 
 const StudentModal: React.FC<ModalProps> = ({ student, onClose }) => {
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-opacity-50 z-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md z-[100]">
+        <div className="fixed inset-0 backdrop-blur-sm bg-black/10 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 w-full max-w-2xl shadow-xl border border-[var(--primary-border-color)]">
                 <h2 className="text-xl font-semibold mb-4">Student Details</h2>
                 <p><strong>Name:</strong> {student.first_name} {student.last_name}</p>
                 <p><strong>Date of Birth:</strong> {student.date_of_birth}</p>

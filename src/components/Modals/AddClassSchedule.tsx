@@ -14,59 +14,90 @@ export function AddClassScheduleModal({ onClose, onSuccess }: AddClassScheduleMo
   const [formData, setFormData] = useState({
     courseId: "",
     subjectId: "",
-    startDate: "",
-    endDate: "",
-    classTime: ""
+    startTime: "",
+    endTime: "",
+    classDate: ""
   });
-  const [courses, setCourses] = useState<any[]>([]);
-  const [subjects, setSubjects] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    fetchCourses();
-  }, []);
-
-  const fetchCourses = async () => {
-    // try {
-    //   const response = await request({
-    //     method: "get",
-    //     path: "/courses"
-    //   });
-    //   setCourses(response.data.data);
-    // } catch (error) {
-    //   console.error("Error fetching courses:", error);
-    // }
-  };
-
-  const fetchSubjects = async (courseId: string) => {
-    // try {
-    //   const response = await request({
-    //     method: "get",
-    //     path: `/subjects?courseId=${courseId}`
-    //   });
-    //   setSubjects(response.data.data);
-    // } catch (error) {
-    //   console.error("Error fetching subjects:", error);
-    // }
-  };
+  const [subjectList, setSubjectList] =  useState<any | null>(null);
+  const [selectedSubject, setSelectedSubject] =  useState<any | null>(null);
+  const [batchList, setBatchList] =  useState<any | null>(null);
+  const [selectedBatch, setSelectedBatch] =  useState<any | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // try {
-    //   await request({
-    //     method: "post",
-    //     path: "/class-schedule",
-    //     requestBody: formData
-    //   });
-    //   onSuccess();
-    // } catch (error) {
-    //   console.error("Error creating class schedule:", error);
-    // } finally {
-    //   setLoading(false);
-    // }
+    try {
+      const response = await request({
+        method: "post",
+        path: "/class-schedule",
+        requestBody: {
+          subjectId: Number(selectedSubject),
+          batchId: Number(selectedBatch),
+          class_date: formData.classDate,
+          start_time: formData.startTime,
+          end_time: formData.endTime
+        },
+      });
+      console.log(formData);
+      setLoading(false);
+      onClose();
+      onSuccess();
+    } catch (error) {
+      setLoading(false);
+      if (error instanceof Error) {
+        alert("An error occurred. Please try again ("+error.message+")");
+      }
+    }
   };
 
+  useEffect(() => {
+    getSubjects();
+    getBatches()
+  }, []);
+
+  useEffect(() => {
+   console.log('selectedBatch',selectedBatch)
+  }, [selectedBatch]);
+
+  const getSubjects = async () => {
+    try {
+      const response = await request({
+        method: "get",
+        path: "/subjects",
+        requestBody: {
+        },
+      });
+      console.log(response);
+      const data = response.data;
+      console.log(data);
+      setSubjectList(data)
+
+    } catch (error) {
+      if (error instanceof Error) {
+        alert("An error occurred. Please username or password and try again");
+      }
+    }
+  };
+  const getBatches = async () => {
+    try {
+      const response = await request({
+        method: "get",
+        path: "/batches",
+        requestBody: {
+        },
+      });
+      console.log(response);
+      const data = response.data;
+      console.log(data);
+      setBatchList(data)
+
+    } catch (error) {
+      if (error instanceof Error) {
+        alert("An error occurred. Please username or password and try again");
+      }
+    }
+  };
   return (
     <div className="fixed inset-0 backdrop-blur-sm bg-black/10 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-6 w-full max-w-2xl shadow-xl border border-[var(--primary-border-color)]">
@@ -82,84 +113,72 @@ export function AddClassScheduleModal({ onClose, onSuccess }: AddClassScheduleMo
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="course">Course</Label>
-              <Select
-                value={formData.courseId}
-                onValueChange={async (value) => {
-                  setFormData({ ...formData, courseId: value, subjectId: "" });
-                  await fetchSubjects(value);
-                }}
-              >
-                <SelectTrigger>
-                  {formData.courseId
-                    ? courses.find(c => c.id === formData.courseId)?.course_name
-                    : "Select course"}
+            <div>
+              {/*<h3 className="text-lg font-medium mb-2  text-left">Course Filter</h3>*/}
+              <Select value={selectedSubject} onValueChange={setSelectedSubject}>
+                <SelectTrigger className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300">
+                  {selectedSubject && batchList?.length > 0
+                      ? subjectList.find(b => b.id == selectedSubject)?.subject_name || "Select Module"
+                      : "Select Module"}
                 </SelectTrigger>
                 <SelectContent>
-                  {courses.map((course) => (
-                    <SelectItem key={course.id} value={course.id}>
-                      {course.course_name}
-                    </SelectItem>
+                  <SelectItem key={`0-${Math.random()}`}  value={null}>All Modules</SelectItem>
+                  {subjectList?.map((module) => (
+                      <SelectItem key={`${module.id}-${Math.random()}`} value={module.id}>{module.subject_name}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="module">Module</Label>
-              <Select
-                value={formData.subjectId}
-                onValueChange={(value) => setFormData({ ...formData, subjectId: value })}
-                disabled={!formData.courseId}
-              >
-                <SelectTrigger>
-                  {formData.subjectId
-                    ? subjects.find(s => s.id === formData.subjectId)?.subject_name
-                    : "Select module"}
+            <div>
+              {/*<h3 className="text-lg font-medium mb-2  text-left">Course Filter</h3>*/}
+              <Select value={selectedBatch} onValueChange={setSelectedBatch}>
+                <SelectTrigger className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300">
+                  {selectedBatch && batchList?.length > 0
+                      ? batchList.find(b => b.id == selectedBatch)?.name || "Select Batch"
+                      : "Select Batch"}
                 </SelectTrigger>
                 <SelectContent>
-                  {subjects.map((subject) => (
-                    <SelectItem key={subject.id} value={subject.id}>
-                      {subject.subject_name}
-                    </SelectItem>
+                  <SelectItem key={`0-${Math.random()}`} value={null}>All Batches</SelectItem>
+                  {batchList?.map(batch => (
+                      <SelectItem key={`${batch.id}-${Math.random()}`} value={batch.id}>{batch.name}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
           </div>
 
+
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="startDate">Start Date</Label>
+              <Label htmlFor="startDate">Start Time</Label>
               <Input
                 id="startDate"
-                type="date"
-                value={formData.startDate}
-                onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                type="time"
+                value={formData.startTime}
+                onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="endDate">End Date</Label>
+              <Label htmlFor="endDate">End Time</Label>
               <Input
                 id="endDate"
-                type="date"
-                value={formData.endDate}
-                onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
+                type="time"
+                value={formData.endTime}
+                onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
                 required
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="classTime">Class Time</Label>
+            <Label htmlFor="classTime">Class Date</Label>
             <Input
               id="classTime"
-              type="time"
-              value={formData.classTime}
-              onChange={(e) => setFormData({ ...formData, classTime: e.target.value })}
+              type="date"
+              value={formData.classDate}
+              onChange={(e) => setFormData({ ...formData, classDate: e.target.value })}
               required
             />
           </div>

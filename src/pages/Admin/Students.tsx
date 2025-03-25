@@ -10,6 +10,8 @@ import { Input } from "../../components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "../../components/ui/select";
 import {request} from "../../lib/apiManagerAdmin";
 import StudentModal from "./Modal/StudentView";
+import {AddClassScheduleModal} from "../../components/Modals/AddClassSchedule";
+import {AddStudentModal} from "../../components/Modals/StudentAdd";
 
 const studentsData = [
   { name: "John Doe", id: "S001", mobile: "1234567890", email: "john@example.com" },
@@ -31,6 +33,8 @@ const coursesData = [
 ];
 
 export default function AdminStudents() {
+
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -205,7 +209,7 @@ export default function AdminStudents() {
 
               {/* Buttons */}
               <div className="flex gap-2">
-                <Button variant="accent">Add Student</Button>
+                <Button  onClick={() => setIsAddModalOpen(true)} variant="accent">Add Student</Button>
                 {/*<Button variant="secondary">Bulk Upload</Button>*/}
               </div>
             </div>
@@ -271,6 +275,16 @@ export default function AdminStudents() {
         </div>
       </SidebarInset>
     </SidebarProvider>
+
+        {isAddModalOpen && (
+            <AddStudentModal
+                onClose={() => setIsAddModalOpen(false)}
+                onSuccess={() => {
+                  setIsAddModalOpen(false);
+                  getStudents(); // Refresh the list
+                }}
+            />
+        )}
       </>
   );
 }
