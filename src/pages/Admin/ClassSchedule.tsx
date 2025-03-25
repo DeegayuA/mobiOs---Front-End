@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { motion } from "framer-motion";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "../../components/ui/breadcrumb";
 import { Separator } from "../../components/ui/separator";
@@ -6,8 +6,14 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from "../../components/
 import { AppSidebar } from "../../components/app-sidebar";
 import { Button } from "../../components/ui/button";
 import { Table, TableHead, TableHeader, TableRow, TableBody, TableCell } from "../../components/ui/table";
+import {request} from "../../lib/apiManagerAdmin";
 
 export default function AdminClassSchedule() {
+  const baseUrl: string = import.meta.env.VITE_BASE_URL as string;
+
+  const [page, setPage] = useState(1);
+  const [classScheduleList, setClassScheduleList] = useState<any | null>(null);
+
   const [activeFilter, setActiveFilter] = React.useState<string>("courses");
   const [currentPage, setCurrentPage] = React.useState(1);
   const heightAdjustment = 300;
@@ -94,11 +100,49 @@ export default function AdminClassSchedule() {
   function handleFilterClick(filter: string): void {
     setActiveFilter(filter);
   }
+  useEffect(() => {
 
-  function handleGenerateQR(courseName: string, moduleName: string) {
-    alert(`QR code generated for ${courseName} - ${moduleName}`);
+    getClassSchedule();
+  }, []);
+
+  async function handleGenerateQR(id: number) {
+    const response = await fetch(baseUrl + '/class-schedule/qr/view/' + id + '/300/2');
+    // Set the download URL to the base64 string
+    const blob = await response.blob();
+
+    // Set the download attribute to suggest a file name
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "image.png"; // Default to 'image.png' if no file name is provided
+
+    // Trigger the download
+    link.click();
   }
-   
+  const getClassSchedule = async () => {
+    try {
+      const response = await request({
+        method: "post",
+        path: "/class-schedule/filter",
+        requestBody: {
+          courseId: null,
+          subjectId: null,
+          value:"",
+          page:page,
+          limit:10
+        },
+      });
+      console.log(response);
+      const data = response.data;
+      console.log(data);
+      setClassScheduleList(data.data)
+
+    } catch (error) {
+      if (error instanceof Error) {
+        alert("An error occurred. Please username or password and try again");
+      }
+    }
+  };
+
 
   return (
     <SidebarProvider>
@@ -145,17 +189,17 @@ export default function AdminClassSchedule() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {currentRows.map((row, index) => (
+                    {classScheduleList?.map((row, index) => (
                       <TableRow key={index} className="hover:bg-gray-100">
-                        <TableCell>{row.courseName}</TableCell>
-                        <TableCell>{row.courseId}</TableCell>
-                        <TableCell>{row.module}</TableCell>
-                        <TableCell>{row.moduleId}</TableCell>
-                        <TableCell><img src={row.qrCode} alt="QR Code" className="w-16 h-16" /></TableCell>
+                        <TableCell>{row.batch.course.course_name}</TableCell>
+                        <TableCell>C0{row.batch.course.id}</TableCell>
+                        <TableCell>{row.subject.subject_name}</TableCell>
+                        <TableCell>S0{row.subject.id}</TableCell>
+                        <TableCell><img src={baseUrl+'/class-schedule/qr/view/'+row.id+'/150/2'} alt="QR Code" className="w-16 h-16" /></TableCell>
                         <TableCell>
-                          <Button variant="link" size="sm">View</Button> |
-                          <Button variant="link" size="sm" onClick={() => handleGenerateQR(row.courseName, row.module)}>
-                            Generate QR
+                          {/*<Button variant="link" size="sm">View</Button> |*/}
+                          <Button variant="link" size="sm" onClick={() => handleGenerateQR(row.id)}>
+                            Download QR
                           </Button>
                         </TableCell>
                       </TableRow>

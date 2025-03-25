@@ -5,11 +5,15 @@ import {request} from "../../lib/apiManagerAdmin";
 import {saveAdminProfileToLocalStorage} from "../../lib/utils";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
-
+import letterE from "../../assets/letter-e.png";
+import img1 from "../../assets/login-bg1.jpg";
+import img2 from "../../assets/login-bg2.jpg";
+import img3 from "../../assets/login-bg3.jpg";
+import {useLoader} from "../../lib/LoaderContext";
 const imageData = [
-  "/src/assets/login-bg1.jpg",
-  "/src/assets/login-bg2.jpg",
-  "/src/assets/login-bg3.jpg"
+  img1,
+  img2,
+  img3,
 ]
 
 export default function AdminLogin() {
@@ -17,6 +21,8 @@ export default function AdminLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { showLoader, hideLoader } = useLoader();
+
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -28,6 +34,7 @@ export default function AdminLogin() {
 
   const login = async (event: React.FormEvent) => {
     try {
+      showLoader()
       event.preventDefault(); // Prevents page reload
       const response = await request({
         method: "post",
@@ -46,16 +53,23 @@ export default function AdminLogin() {
       console.log("profileData")
       console.log(profileData)
       console.log(data)
+
       if(profileData.access_token){
+        console.log("is loaded")
         await saveAdminProfileToLocalStorage(profileData);
-        navigate("/admin/dashboard");
+        // setTimeout(async () => {
+          hideLoader()
+        window.location.href = "/admin/dashboard";
+        // },500)
+
         console.log('ss')
       }else {
-
+        hideLoader()
         console.log('err')
       }
 
     } catch (error) {
+      hideLoader()
       if (error instanceof Error) {
         alert("An error occurred. Please username or password and try again");
       }
@@ -84,7 +98,7 @@ export default function AdminLogin() {
         <div className="flex justify-center gap-2 md:justify-start">
           <a href="#" className="flex items-center gap-2 font-medium">
             <div className="text-sidebar-primary-foreground flex aspect-square size-6 items-center justify-center rounded-lg">
-              <img src="./src/assets/letter-e.png" alt="Sidebar Icon" />
+              <img src={letterE} alt="Sidebar Icon" />
             </div>
             E-Attendance
           </a>

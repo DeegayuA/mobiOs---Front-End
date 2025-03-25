@@ -19,6 +19,8 @@ import { AddSchedule } from "./pages/Admin/AddSchedule";
 import { Reports } from "./pages/Admin/Reports";
 import { AddStudent } from "./pages/Admin/AddStudent";
 import AdminLogin from "./pages/Admin/Login";
+import NoLogin from "./pages/Student/NoLogin";
+import GlobalLoader from "./lib/GlobalLoader";
 
 // Protected Route Component
 const ProtectedRoute = ({ isAuthenticated, redirectTo }) => {
@@ -27,24 +29,27 @@ const ProtectedRoute = ({ isAuthenticated, redirectTo }) => {
 
 // Simulated authentication check (replace with actual logic)
 const isAdminAuthenticated = () => {
-  // console.log("localStorage.getItem(")
-  // console.log(localStorage.getItem("adminToken"))
+  console.log("localStorage.getItem(admin")
+  console.log(localStorage.getItem("adminToken"))
   return !!localStorage.getItem("adminToken"); // Example logic for admin authentication
 };
 
 const isStudentAuthenticated = () => {
-  return !!localStorage.getItem("studentToken"); // Example logic for student authentication
+  console.log("localStorage.getItem(student")
+  return !!localStorage.getItem("profile"); // Example logic for student authentication
 };
 
 export default function AppRouter() {
   return (
       <Router>
+        <GlobalLoader />
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<AdminLogin />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/confirmation" element={<Confirmation />} />
           <Route path="/admin" element={<AdminLogin />} />
+          <Route path="/student/auth" element={<NoLogin />} />
 
           {/* Admin Protected Routes */}
           <Route element={<ProtectedRoute isAuthenticated={isAdminAuthenticated()} redirectTo="/admin" />}>
@@ -62,7 +67,7 @@ export default function AppRouter() {
           </Route>
 
           {/* Student Protected Routes */}
-          <Route element={<ProtectedRoute isAuthenticated={isStudentAuthenticated()} redirectTo="/" />}>
+          <Route element={<ProtectedRoute isAuthenticated={isStudentAuthenticated()} redirectTo="/student/auth" />}>
             <Route path="/student" element={<StudentLayout />}>
               <Route path="qr-scanner" element={<QRScanner />} />
               <Route path="attendence" element={<Attendence />} />

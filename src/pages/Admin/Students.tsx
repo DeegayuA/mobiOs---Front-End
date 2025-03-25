@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { motion } from "framer-motion";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList } from "../../components/ui/breadcrumb";
 import { Separator } from "../../components/ui/separator";
@@ -8,6 +8,7 @@ import { Button } from "../../components/ui/button";
 import { Table, TableHead, TableHeader, TableRow, TableBody, TableCell } from "../../components/ui/table";
 import { Input } from "../../components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "../../components/ui/select";
+import {request} from "../../lib/apiManagerAdmin";
 
 const studentsData = [
   { name: "John Doe", id: "S001", mobile: "1234567890", email: "john@example.com" },
@@ -30,7 +31,6 @@ const coursesData = [
 
 export default function AdminStudents() {
   const [selectedStudent, setSelectedStudent] = useState("all");
-  const [selectedCourse, setSelectedCourse] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const heightAdjustment = 200;
@@ -38,7 +38,7 @@ export default function AdminStudents() {
 
   const filteredData = studentsData.filter((student) =>
     (selectedStudent === "all" || student.name === selectedStudent) &&
-    (selectedCourse === "all" || student.email.includes(selectedCourse)) &&
+    // (selectedCourse === "all" || student.email.includes(selectedCourse)) &&
     (student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       student.id.toLowerCase().includes(searchTerm.toLowerCase()))
   );
@@ -47,6 +47,87 @@ export default function AdminStudents() {
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
   const currentRows = filteredData.slice(indexOfFirstRow, indexOfLastRow);
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+
+  const [page, setPage] = useState(1);
+  const [batchList, setBatchList] =  useState<any | null>(null);
+  const [selectedBatch, setSelectedBatch] =  useState<any | null>(null);
+  const [courseList, setCourseList] = useState<any | null>(null);
+  const [selectedCourse, setSelectedCourse] = useState<any | null>(null);
+  const [studentList, setStudentList] = useState<any | null>(null);
+
+  useEffect(() => {
+
+    getStudents();
+  }, [selectedCourse, selectedBatch, searchTerm]);
+
+  useEffect(() => {
+    getBatches();
+    getCourses();
+    getStudents();
+  }, []);
+
+  const getBatches = async () => {
+    try {
+      const response = await request({
+        method: "get",
+        path: "/batches",
+        requestBody: {
+        },
+      });
+      console.log(response);
+      const data = response.data;
+      console.log(data);
+      setBatchList(data)
+
+    } catch (error) {
+      if (error instanceof Error) {
+        alert("An error occurred. Please username or password and try again");
+      }
+    }
+  };
+  const getCourses = async () => {
+    try {
+      const response = await request({
+        method: "get",
+        path: "/courses",
+        requestBody: {
+        },
+      });
+      console.log(response);
+      const data = response.data;
+      console.log(data);
+      setCourseList(data)
+
+    } catch (error) {
+      if (error instanceof Error) {
+        alert("An error occurred. Please username or password and try again");
+      }
+    }
+  };
+  const getStudents = async () => {
+    try {
+      const response = await request({
+        method: "post",
+        path: "/students/filter",
+        requestBody: {
+          courseId: selectedCourse?.id,
+          batchId: selectedBatch?.id,
+          value: searchTerm,
+          page: page,
+          limit: 10
+        },
+      });
+      console.log(response);
+      const data = response.data;
+      console.log(data);
+      setStudentList(data.data)
+
+    } catch (error) {
+      if (error instanceof Error) {
+        alert("An error occurred. Please username or password and try again");
+      }
+    }
+  };
 
   return (
     <SidebarProvider>
@@ -72,28 +153,34 @@ export default function AdminStudents() {
             <div className="flex justify-between mt-4">
               {/* Filter Section */}
               <div className="flex gap-4 max-w-[500px]">
-                <Select value={selectedStudent} onValueChange={setSelectedStudent}>
-                                    <SelectTrigger className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300">
-                    {selectedStudent === "all" ? "Select Student" : selectedStudent}
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Students</SelectItem>
-                    {studentsData.map((student) => (
-                      <SelectItem key={student.id} value={student.name}>{student.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Select value={selectedCourse} onValueChange={setSelectedCourse}>
-                                    <SelectTrigger className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300">
-                    {selectedCourse === "all" ? "Select Course" : selectedCourse}
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Courses</SelectItem>
-                    {coursesData.map((course, index) => (
-                      <SelectItem key={index} value={course.name}>{course.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <div>
+                  {/*<h3 className="text-lg font-medium mb-2  text-left">Course Filter</h3>*/}
+                  <Select value={selectedCourse} onValueChange={setSelectedCourse}>
+                    <SelectTrigger className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300">
+                      {selectedCourse == null ? "Select Course" : selectedCourse.course_name}
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value={null}>All Courses</SelectItem>
+                      {courseList?.map(course => (
+                          <SelectItem key={course.id} value={course}>{course.course_name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  {/*<h3 className="text-lg font-medium mb-2  text-left">Course Filter</h3>*/}
+                  <Select value={selectedBatch} onValueChange={setSelectedBatch}>
+                    <SelectTrigger className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300">
+                      {selectedBatch == null ? "Select Batch" : selectedBatch.name}
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value={null}>All Batches</SelectItem>
+                      {batchList?.map(batch => (
+                          <SelectItem key={batch.id} value={batch}>{batch.name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
                 <Input
                   type="text"
                   placeholder="Search"
@@ -106,13 +193,13 @@ export default function AdminStudents() {
               {/* Buttons */}
               <div className="flex gap-2">
                 <Button variant="accent">Add Student</Button>
-                <Button variant="secondary">Bulk Upload</Button>
+                {/*<Button variant="secondary">Bulk Upload</Button>*/}
               </div>
             </div>
 
             {/* Table */}
             <motion.div
-              key={currentPage} 
+              key={currentPage}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -130,14 +217,14 @@ export default function AdminStudents() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {currentRows.map((student, index) => (
+                    {studentList?.map((student, index) => (
                       <TableRow key={index} className="odd:bg-gray-100 even:bg-white">
-                        <TableCell className="px-4 py-2">{student.name}</TableCell>
-                        <TableCell className="px-4 py-2">{student.id}</TableCell>
-                        <TableCell className="px-4 py-2">{student.mobile}</TableCell>
+                        <TableCell className="px-4 py-2">{student.first_name} {student.last_name}</TableCell>
+                        <TableCell className="px-4 py-2">ST0{student.id}</TableCell>
+                        <TableCell className="px-4 py-2">{student.phone_number}</TableCell>
                         <TableCell className="px-4 py-2">{student.email}</TableCell>
                         <TableCell className="space-y-1">
-                          <Button variant="link" size="sm" title="Reset student password">Reset Password</Button>
+                          {/*<Button variant="link" size="sm" title="Reset student password">Reset Password</Button>*/}
                           <Button variant="link" size="sm">View</Button>
                           <Button variant="link" size="sm">Edit</Button>
                         </TableCell>

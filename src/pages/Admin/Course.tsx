@@ -39,8 +39,8 @@ export default function AdminCourse() {
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const heightAdjustment = 120; 
-  const rowsPerPage = Math.floor((window.innerHeight - heightAdjustment) / 50); 
+  const heightAdjustment = 120;
+  const rowsPerPage = Math.floor((window.innerHeight - heightAdjustment) / 50);
 
   // Pagination logic
   const indexOfLastRow = currentPage * rowsPerPage;
@@ -89,7 +89,7 @@ export default function AdminCourse() {
             <span className="ml-auto font-medium text-gray-600">Hi! Admin</span>
           </header>
 
-          <div className="flex flex-1 flex-col p-6">
+          <div className="flex flex-1 flex-col gap-4 p-6 overflow-y-auto">
             <h2 className="text-2xl font-semibold text-left">Programs - Course</h2>
             <h3 className="text-lg font-medium mt-4 mb-2 text-left">Filter</h3>
 

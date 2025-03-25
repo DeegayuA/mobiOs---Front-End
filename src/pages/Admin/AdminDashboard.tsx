@@ -35,13 +35,18 @@ const courseData = Array.from({ length: 30 }, (_, i) => ({
 
 export default function AdminDashboard() {
 
-  const allModules = Object.values(data).flat();
-  const [selectedCourse, setSelectedCourse] = useState<keyof typeof data | "all">("all");
-  const [selectedModule, setSelectedModule] = useState<string>("all");
-  const [modules, setModules] = useState<string[]>(selectedCourse === "all" ? [] : data[selectedCourse] || []);
+  // const allModules = Object.values(data).flat();
+  // const [modules, setModules] = useState<string[]>(selectedCourse === "all" ? [] : data[selectedCourse] || []);
+  const [page, setPage] = useState(1);
   const [filteredData, setFilteredData] = useState(courseData);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [counts, setCounts] = useState(null);
+  const [subjectList, setSubjectList] =  useState<any | null>(null);
+  const [selectedSubject, setSelectedSubject] =  useState<any | null>(null);
+  const [courseList, setCourseList] = useState<any | null>(null);
+  const [selectedCourse, setSelectedCourse] = useState<any | null>(null);
+  const [classScheduleList, setClassScheduleList] = useState<any | null>(null);
+
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -57,26 +62,30 @@ export default function AdminDashboard() {
 
 
   useEffect(() => {
-    if (selectedCourse === "all") {
-      setSelectedModule("all");
-      setSearchTerm("");
-    }
-    let filtered = courseData.filter((item) =>
-      (selectedCourse === "all" || item.course === selectedCourse) &&
-      (selectedModule === "all" || item.module === selectedModule) &&
-      (item.course.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.module.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.instructor.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
-    setFilteredData(filtered);
-  }, [selectedCourse, selectedModule, searchTerm]);
+    // if (selectedCourse === null) {
+    //   setSelectedSubject(null);
+    //   setSearchTerm("");
+    // }
+    // let filtered = courseData.filter((item) =>
+    //   (selectedCourse === null || item.course === selectedCourse) &&
+    //   (selectedSubject === null || item.module === selectedSubject) &&
+    //   (item.course.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    //     item.module.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    //     item.instructor.toLowerCase().includes(searchTerm.toLowerCase()))
+    // );
+    // setFilteredData(filtered);
+    getClassSchedule();
+  }, [selectedCourse, selectedSubject, searchTerm]);
 
-  useEffect(() => {
-    setModules(selectedCourse === "all" ? allModules : data[selectedCourse] || []);
-  }, [selectedCourse]);
+  // useEffect(() => {
+  //   setModules(selectedCourse === "all" ? allModules : data[selectedCourse] || []);
+  // }, [selectedCourse]);
 
   useEffect(() => {
     getCounts();
+    getCourses();
+    getSubjects();
+    getClassSchedule();
   }, []);
 
   const getCounts = async () => {
@@ -91,6 +100,68 @@ export default function AdminDashboard() {
       const data = response.data;
       console.log(data);
       setCounts(data)
+
+    } catch (error) {
+      if (error instanceof Error) {
+        alert("An error occurred. Please username or password and try again");
+      }
+    }
+  };
+  const getCourses = async () => {
+    try {
+      const response = await request({
+        method: "get",
+        path: "/courses",
+        requestBody: {
+        },
+      });
+      console.log(response);
+      const data = response.data;
+      console.log(data);
+      setCourseList(data)
+
+    } catch (error) {
+      if (error instanceof Error) {
+        alert("An error occurred. Please username or password and try again");
+      }
+    }
+  };
+  const getSubjects = async () => {
+    try {
+      const response = await request({
+        method: "get",
+        path: "/subjects",
+        requestBody: {
+        },
+      });
+      console.log(response);
+      const data = response.data;
+      console.log(data);
+      setSubjectList(data)
+
+    } catch (error) {
+      if (error instanceof Error) {
+        alert("An error occurred. Please username or password and try again");
+      }
+    }
+  };
+  const getClassSchedule = async () => {
+    try {
+      const response = await request({
+        method: "post",
+        path: "/class-schedule/filter",
+        requestBody: {
+          courseId: selectedCourse?.id,
+          subjectId: selectedSubject?.id,
+          value:searchTerm,
+          page:page,
+          limit:10
+        },
+      });
+      console.log(response);
+      const data = response.data;
+      console.log(data);
+      setClassScheduleList(data.data)
 
     } catch (error) {
       if (error instanceof Error) {
@@ -121,9 +192,9 @@ export default function AdminDashboard() {
             <span className="ml-auto font-medium text-gray-600">Hi! Admin</span>
           </header>
           <div className="flex flex-1 flex-col gap-4 p-6 overflow-y-auto">
-            <h2 className="text-2xl font-semibold uppercase px-4 text-left">DASHBOARD</h2>
+            <h2 className="text-2xl font-semibold uppercase  text-left">DASHBOARD</h2>
 
-            <div className="grid px-4 grid-cols-2 xl:grid-cols-6 sm:grid-cols-3 gap-4 md:grid-cols-4 gap-4 gap-4 flex-wrap max-w-full min-w-[200px]">
+            <div className="grid  grid-cols-2 xl:grid-cols-6 sm:grid-cols-3 gap-4 md:grid-cols-4 gap-4 gap-4 flex-wrap max-w-full min-w-[200px]">
               <Card className="border border-[var(--primary-border-color)]">
                 <CardHeader>
                   <CardTitle>Number of Active Courses</CardTitle>
@@ -158,7 +229,7 @@ export default function AdminDashboard() {
               </Card>
               <Card className="border border-[var(--primary-border-color)]">
                 <CardHeader>
-                  <CardTitle>Total Classes Conducted</CardTitle>
+                  <CardTitle>Total Classes Conducted (Upcoming)</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-4xl font-bold text-[var(--accent)]">{counts?.classScheduleCount??0}</p>
@@ -174,33 +245,33 @@ export default function AdminDashboard() {
               </Card>
             </div>
 
-            <div className="flex gap-4 px-4 flex-wrap">
+            <div className="flex gap-4  flex-wrap">
               <div>
                 <h3 className="text-lg font-medium mb-2  text-left">Course Filter</h3>
-                <Select value={selectedCourse} onValueChange={(value) => setSelectedCourse(value as keyof typeof data | "all")}>
+                <Select value={selectedCourse} onValueChange={setSelectedCourse}>
                   <SelectTrigger className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300">
-                    {selectedCourse === "all" ? "Select Course" : selectedCourse}
+                    {selectedCourse == null ? "Select Course" : selectedCourse.course_name}
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Courses</SelectItem>
-                    {Object.keys(data).map(course => (
-                      <SelectItem key={course} value={course}>{course}</SelectItem>
+                    <SelectItem value={null}>All Courses</SelectItem>
+                    {courseList?.map(course => (
+                      <SelectItem key={course.id} value={course}>{course.course_name}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
 
-              {selectedCourse !== "all" && (
+              {selectedCourse !== null && (
                 <div>
                   <h3 className="text-lg font-medium mb-2 text-left">Module Filter</h3>
-                  <Select value={selectedModule} onValueChange={setSelectedModule}>
+                  <Select value={selectedSubject} onValueChange={setSelectedSubject}>
                     <SelectTrigger className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300">
-                      {selectedModule === "all" ? "Select Module" : selectedModule}
+                      {selectedSubject === null ? "Select Module" : selectedSubject.subject_name}
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All Modules</SelectItem>
-                      {modules.map((module) => (
-                        <SelectItem key={module} value={module}>{module}</SelectItem>
+                      <SelectItem value={null}>All Modules</SelectItem>
+                      {subjectList?.map((module) => (
+                        <SelectItem key={module.id} value={module}>{module.subject_name}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -226,8 +297,8 @@ export default function AdminDashboard() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
             >
-              <div className="overflow-x-auto bg-white shadow-md rounded-lg mx-4 p-4 text-left border border-[var(--primary-border-color)]">
-                <Table className="px-4 border-collapse w-full">
+              <div className="overflow-x-auto bg-white shadow-md rounded-lg  p-4 text-left border border-[var(--primary-border-color)]">
+                <Table className=" border-collapse w-full">
                   <TableHeader className="color-[var(--primary-border-color)]">
                     <TableRow>
                       <TableHead>Courses</TableHead>
@@ -237,12 +308,12 @@ export default function AdminDashboard() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {currentRows.map((row, index) => (
+                    {classScheduleList?.map((row, index) => (
                       <TableRow key={index} className="hover:bg-gray-100">
-                        <TableCell>{row.course}</TableCell>
-                        <TableCell>{row.module}</TableCell>
-                        <TableCell>{row.classDate}</TableCell>
-                        <TableCell>{row.instructor}</TableCell>
+                        <TableCell>{row.batch.course.course_name}</TableCell>
+                        <TableCell>{row.subject.subject_name}</TableCell>
+                        <TableCell>{row.class_date}</TableCell>
+                        <TableCell>{row.subject.teacher.first_name} {row.subject.teacher.last_name}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
