@@ -8,34 +8,16 @@ import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "../../components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableRow } from "../../components/ui/table";
+import { request } from "../../lib/apiManagerAdmin";
 
-// Dummy Data for API Simulation
-const data = {
-  "Artificial Intelligence": ["Deep Learning", "Neural Networks", "AI Ethics"],
-  "Data Science": ["Machine Learning", "Data Analytics", "Big Data"],
-  "Cyber Security": ["Cryptography", "Cloud Security", "Ethical Hacking"],
-  "Quantum Computing": ["Quantum Algorithms", "Quantum Cryptography"],
-  "Robotics": ["Embedded Systems", "Automation"],
-  "Biochemistry": ["Bioinformatics", "Genetic Engineering"],
-  "Network Engineering": ["Network Security", "Wireless Communications"],
-  "IoT Systems": ["Smart Devices", "Edge Computing"],
-  "Software Engineering": ["Agile Development", "Software Testing"]
-};
-
-const courseData = Array.from({ length: 30 }, (_, i) => ({
-  course: i % 3 === 0 ? "Artificial Intelligence" : i % 3 === 1 ? "Data Science" : "Cyber Security",
-  module: i % 3 === 0 ? "Deep Learning" : i % 3 === 1 ? "Machine Learning" : "Cloud Security",
-  instructor: `Instructor ${i + 1}`,
-  classDate: `2025-04-${String(1 + (i % 30)).padStart(2, '0')}`,
-}));
-
-export default function AdminCourse() {
-  const [activeFilter, setActiveFilter] = useState<string>("courses");
-  const [selectedCourse, setSelectedCourse] = useState<keyof typeof data | "all">("all");
-  const [selectedModule, setSelectedModule] = useState<string>("all");
-  const [modules, setModules] = useState<string[]>(selectedCourse === "all" ? [] : (selectedCourse in data ? data[selectedCourse] : []));
-  const [filteredData, setFilteredData] = useState(courseData);
-  const [searchTerm, setSearchTerm] = useState<string>("");
+const AdminCourse = () => {
+  const [activeFilter, setActiveFilter] = useState("courses");
+  const [selectedCourse, setSelectedCourse] = useState("all");
+  const [selectedModule, setSelectedModule] = useState("all");
+  const [modules, setModules] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [courseData, setCourseData] = useState([]);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -49,15 +31,30 @@ export default function AdminCourse() {
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
 
   useEffect(() => {
-    let filtered = courseData.filter((item) =>
-      (selectedCourse === "all" || item.course === selectedCourse) &&
+    const fetchCourses = async () => {
+      try {
+        const response = await request({ method: "get", path: "/courses" });
+        if (response.status === 200) {
+          setCourseData(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+      }
+    };
+
+    fetchCourses();
+  }, []);
+
+  useEffect(() => {
+    const filtered = courseData.filter((item) =>
+      (selectedCourse === "all" || item.course_name === selectedCourse) &&
       (selectedModule === "all" || item.module === selectedModule) &&
-      (item.course.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (item.course_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.module.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.instructor.toLowerCase().includes(searchTerm.toLowerCase()))
     );
     setFilteredData(filtered);
-  }, [selectedCourse, selectedModule, searchTerm]);
+  }, [selectedCourse, selectedModule, searchTerm, courseData]);
 
   useEffect(() => {
     setModules(selectedCourse === "all" ? [] : data[selectedCourse] || []);
@@ -95,15 +92,14 @@ export default function AdminCourse() {
 
             <div className="flex gap-4 mt-4">
               <div>
-                {/* <h3 className="text-lg font-medium mb-2 text-left">Course Filter</h3> */}
-                <Select value={selectedCourse} onValueChange={(value) => setSelectedCourse(value as keyof typeof data | "all")}>
+                <Select value={selectedCourse} onValueChange={(value) => setSelectedCourse(value)}>
                   <SelectTrigger className="border border-[var(--primary-border-color)] rounded-lg p-3 elevation-1 hover:elevation-2 transition-all duration-300">
                     {selectedCourse === "all" ? "Select Course" : selectedCourse}
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">Select Course</SelectItem>
-                    {Object.keys(data).map(course => (
-                      <SelectItem key={course} value={course}>{course}</SelectItem>
+                    {courseData.map(course => (
+                      <SelectItem key={course.id} value={course.course_name}>{course.course_name}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -156,7 +152,7 @@ export default function AdminCourse() {
                     </TableRow>
                     {currentRows.map((row, index) => (
                       <TableRow key={index} className="hover:bg-gray-100">
-                        <TableCell>{row.course}</TableCell>
+                        <TableCell>{row.course_name}</TableCell>
                         <TableCell>{row.module}</TableCell>
                         <TableCell>{row.classDate}</TableCell>
                         <TableCell>{row.instructor}</TableCell>
@@ -198,4 +194,6 @@ export default function AdminCourse() {
       </SidebarInset>
     </SidebarProvider>
   );
-}
+};
+
+export default AdminCourse;
